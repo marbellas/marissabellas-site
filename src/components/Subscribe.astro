@@ -1,0 +1,29 @@
+---
+// Wire this to a real list before you ship.
+//
+// Buttondown : https://buttondown.com/api/emails/embed-subscribe/YOUR_USERNAME
+// Kit        : the POST URL from the form's "raw HTML" embed
+// Both have a free tier that covers you well past your first few hundred readers.
+const ACTION = 'https://buttondown.com/api/emails/embed-subscribe/YOUR_USERNAME';
+---
+
+<section class="subscribe" aria-labelledby="subscribe-heading">
+  <h2 id="subscribe-heading">Get new writing by email</h2>
+  <p>
+    Notes on agent governance, identity, and cloud security posture. One email when something new
+    goes up, and nothing else.
+  </p>
+  <form class="subscribe__form" action={ACTION} method="post" target="_blank">
+    <label class="skip" for="subscribe-email">Email address</label>
+    <input
+      id="subscribe-email"
+      type="email"
+      name="email"
+      placeholder="you@company.com"
+      autocomplete="email"
+      required
+    />
+    <button type="submit">Subscribe</button>
+  </form>
+  <p class="subscribe__note">No tracking pixels. Unsubscribe from any email.</p>
+</section>

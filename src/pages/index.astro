@@ -1,0 +1,38 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import EntryList from '../components/EntryList.astro';
+import Subscribe from '../components/Subscribe.astro';
+
+const entries = (await getCollection('writing', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf())
+  .slice(0, 5);
+---
+
+<Base
+  title="Marissa Bellas — agent governance and cloud security"
+  description="Writing on AI agent governance, identity, and cloud security posture, by a customer experience engineer at Microsoft Security."
+>
+  <h1 class="thesis">
+    <span>Agents have identities,</span>
+    <span>permissions, and a</span>
+    <span>blast radius.</span>
+  </h1>
+
+  <p class="standfirst hero-fade">
+    Most organizations still govern them like features. I write about what changes when an agent
+    is treated as a principal in your tenant instead of a checkbox in a product roadmap.
+  </p>
+
+  <p class="standfirst hero-fade">
+    I'm a senior customer experience engineer at Microsoft Security. Everything here is my own
+    view, grounded in what actually ships.
+  </p>
+
+  <section class="section">
+    <h2>Recent writing</h2>
+    <EntryList entries={entries} />
+  </section>
+
+  <Subscribe />
+</Base>

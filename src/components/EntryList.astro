@@ -1,0 +1,35 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entries: CollectionEntry<'writing'>[];
+}
+
+const { entries } = Astro.props;
+
+const stamp = (date: Date) =>
+  date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', timeZone: 'UTC' });
+---
+
+{
+  entries.length === 0 ? (
+    <p class="empty">Nothing published yet. The first piece goes here.</p>
+  ) : (
+    <ul class="entries">
+      {entries.map((entry) => (
+        <li class="entry">
+          <div class="entry__meta">
+            <time datetime={entry.data.published.toISOString()}>{stamp(entry.data.published)}</time>
+            <span>{entry.data.kind}</span>
+          </div>
+          <div class="entry__body">
+            <h2 class="entry__title">
+              <a href={`/writing/${entry.id}/`}>{entry.data.title}</a>
+            </h2>
+            <p class="entry__standfirst">{entry.data.standfirst}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  )
+}

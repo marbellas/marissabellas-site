@@ -1,0 +1,70 @@
+---
+import Base from '../layouts/Base.astro';
+import Subscribe from '../components/Subscribe.astro';
+
+// This page is the reason the site is a platform and not a blog.
+// Fill it in as things happen; delete the sections you don't have yet.
+const talks = [
+  {
+    title: 'Add your first talk here',
+    detail: 'Venue, date, and one line on the argument you made. Link the slides or recording.',
+  },
+];
+
+const projects = [
+  {
+    title: 'Add a project or tool',
+    detail:
+      'Anything a reader could go look at: a script, a reference architecture, a policy pack.',
+  },
+];
+---
+
+<Base
+  title="Work — Marissa Bellas"
+  description="Talks, projects, and ways to work with Marissa Bellas on agent governance and cloud security."
+>
+  <h1 class="thesis thesis--page">
+    <span>Work</span>
+  </h1>
+  <p class="standfirst hero-fade">
+    Talks, tools, and the things I'll take an invitation for.
+  </p>
+
+  <section class="section">
+    <h2>Talks</h2>
+    <ul class="stack">
+      {
+        talks.map((item) => (
+          <li>
+            <h3>{item.title}</h3>
+            <p>{item.detail}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Projects</h2>
+    <ul class="stack">
+      {
+        projects.map((item) => (
+          <li>
+            <h3>{item.title}</h3>
+            <p>{item.detail}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Get in touch</h2>
+    <p class="empty">
+      Speaking, podcasts, and review requests: hello@marissabellas.com
+    </p>
+  </section>
+
+  <Subscribe />
+</Base>

@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import EntryList from '../../components/EntryList.astro';
+import Subscribe from '../../components/Subscribe.astro';
+
+const entries = (await getCollection('writing', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.published.valueOf() - a.data.published.valueOf()
+);
+---
+
+<Base
+  title="Writing — Marissa Bellas"
+  description="Essays and notes on AI agent governance, identity, and cloud security posture."
+>
+  <h1 class="thesis thesis--page">
+    <span>Writing</span>
+  </h1>
+  <p class="standfirst hero-fade">
+    Longer arguments about governing autonomous systems, plus shorter notes on things I hit in the
+    field.
+  </p>
+  <div class="section">
+    <EntryList entries={entries} />
+  </div>
+  <Subscribe />
+</Base>
