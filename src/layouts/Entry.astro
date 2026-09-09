@@ -2,13 +2,14 @@
 import type { CollectionEntry } from 'astro:content';
 import Base from './Base.astro';
 import Subscribe from '../components/Subscribe.astro';
+import { KINDS, type Kind } from '../lib/kinds';
 
 interface Props {
   entry: CollectionEntry<'writing'>;
 }
 
 const { entry } = Astro.props;
-const { title, standfirst, published, updated, kind, tags } = entry.data;
+const { title, standfirst, published, updated, kind, tags, composite } = entry.data;
 
 const stamp = (date: Date) =>
   date.toLocaleDateString('en-US', {
@@ -23,13 +24,28 @@ const stamp = (date: Date) =>
   <article>
     <header class="article-head">
       <h1>{title}</h1>
+      <p class="article-head__standfirst">{standfirst}</p>
       <div class="article-head__meta">
         <time datetime={published.toISOString()}>{stamp(published)}</time>
-        <span>{kind}</span>
+        <span>{KINDS[kind as Kind].label}</span>
         {updated && <span>updated {stamp(updated)}</span>}
         {tags.length > 0 && <span>{tags.join(', ')}</span>}
       </div>
     </header>
+
+    {
+      composite && (
+        <aside class="provenance">
+          <p>
+            Drawn from real work and composited. Details from separate engagements are recombined,
+            numbers are synthesized or rounded, and identifying specifics are changed. Nothing here
+            identifies a client.{' '}
+            <a href="/about/#on-customer-stories">Why it's written this way.</a>
+          </p>
+        </aside>
+      )
+    }
+
     <div class="prose">
       <slot />
     </div>

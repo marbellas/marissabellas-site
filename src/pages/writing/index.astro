@@ -3,25 +3,57 @@ import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import EntryList from '../../components/EntryList.astro';
 import Subscribe from '../../components/Subscribe.astro';
+import { KINDS, KIND_ORDER } from '../../lib/kinds';
 
-const entries = (await getCollection('writing', ({ data }) => !data.draft)).sort(
+const all = (await getCollection('writing', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.published.valueOf() - a.data.published.valueOf()
 );
+
+// The guide reads as four sections rather than one reverse-chronological
+// list. Sections with nothing in them are still shown, so the shape of the
+// guide is visible before it is full.
+const sections = KIND_ORDER.map((kind) => ({
+  kind,
+  meta: KINDS[kind],
+  entries: all.filter((entry) => entry.data.kind === kind),
+}));
 ---
 
 <Base
-  title="Writing — Marissa Bellas"
-  description="Essays and notes on AI agent governance, identity, and cloud security posture."
+  title="Field guide — Marissa Bellas"
+  description="Field notes, patterns, postmortems, and signals on security and AI, organized by what you came for."
 >
   <h1 class="thesis thesis--page">
-    <span>Writing</span>
+    <span>Field guide</span>
   </h1>
   <p class="standfirst hero-fade">
-    Longer arguments about governing autonomous systems, plus shorter notes on things I hit in the
-    field.
+    Organized by what you came for, not by when I wrote it. Four sections: a situation, a practice,
+    a failure, or something arriving next.
   </p>
-  <div class="section">
-    <EntryList entries={entries} />
-  </div>
+
+  <nav class="jump" aria-label="Sections">
+    {
+      sections.map((section) => (
+        <a href={`#${section.meta.anchor}`}>
+          {section.meta.plural} <span class="jump__count">{section.entries.length}</span>
+        </a>
+      ))
+    }
+  </nav>
+
+  {
+    sections.map((section) => (
+      <section class="section" id={section.meta.anchor}>
+        <h2>{section.meta.plural}</h2>
+        <p class="section__blurb">{section.meta.blurb}</p>
+        {section.entries.length === 0 ? (
+          <p class="empty">Nothing here yet.</p>
+        ) : (
+          <EntryList entries={section.entries} />
+        )}
+      </section>
+    ))
+  }
+
   <Subscribe />
 </Base>

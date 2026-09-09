@@ -2,9 +2,10 @@
 title: "The State of Zava: a fictional state, a real problem, a working prototype"
 standfirst: "A state CISO is accountable for hundreds of organizations they can't give orders to. I built a dashboard to find out what that actually takes."
 published: 2026-03-11
-kind: essay
+kind: field-note
 tags: ["government", "security posture", "prototyping"]
 draft: false
+composite: true
 ---
 
 A state CISO told me something that stuck with me:
@@ -17,7 +18,7 @@ Meet the State of Zava — a fictional state with a very real problem, and a wor
 
 [Explore the interactive prototype](https://marbellas.github.io/security-dashboard/)
 
-{/* PLACEHOLDER: dashboard overview screenshot goes here */}
+<!-- TODO: dashboard overview screenshot goes here -->
 
 ## Why this problem is uniquely hard in government
 
@@ -46,7 +47,7 @@ The goal was simple: a single pane of glass that gives a state CISO immediate an
 
 What emerged was a fully interactive dashboard with drill-downs, role-based views, and real-time filtering — all running as a single HTML file with no backend dependencies.
 
-{/* PLACEHOLDER: entity drill-down screenshot goes here */}
+<!-- TODO: entity drill-down screenshot goes here -->
 
 ## What we built
 

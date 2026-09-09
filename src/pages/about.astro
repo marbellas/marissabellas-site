@@ -5,7 +5,7 @@ import Subscribe from '../components/Subscribe.astro';
 
 <Base
   title="About — Marissa Bellas"
-  description="Marissa Bellas writes about identity, cloud security, and the systems that act on our behalf."
+  description="Marissa Bellas has worked in delivery, sales, and product on security and AI. This is the field guide that came out of it."
 >
   <h1 class="thesis thesis--page">
     <span>About</span>
@@ -13,25 +13,67 @@ import Subscribe from '../components/Subscribe.astro';
 
   <div class="prose hero-fade">
     <p>
-      I'm Marissa Bellas. I work in cloud security — identity, access, and the growing pile of
-      software that acts on our behalf. Most of what I write comes from watching governance ideas
-      meet real environments, and noticing where they stop holding up.
-    </p>
-    <p>
-      {/* PLACEHOLDER: your real bio. What you work on, what you've seen enough of to have a
-      view about, and what you're trying to figure out next. Keep your employer out of it. */}
+      I'm Marissa Bellas. I've worked on security and AI from three seats, and this site exists
+      because the view from each one contradicts the others in ways that turned out to matter.
     </p>
 
-    <h2>What I write about</h2>
-    <ul>
-      <li>Governing AI agents as identities: scope, consent, and revocation.</li>
-      <li>What a clean posture dashboard still fails to tell you.</li>
-      <li>The gap between a security control on paper and one an operator will actually run.</li>
-    </ul>
+    <p>
+      <strong>Delivery first.</strong> I was on the deployment side, which is where you learn that
+      the gap between a control on a slide and a control an operator will actually run is where
+      most security programs quietly fail.
+      {/* SLOT: one concrete sentence — the kind of environments, the scale, the years.
+          Something only you can say. No employer name needed. */}
+    </p>
+
+    <p>
+      <strong>Then sales.</strong> Sales teaches you a thing delivery cannot: the difference
+      between what a customer asks for, what they will approve budget for, and what they will
+      still be running in eighteen months. Those are three different products.
+      {/* SLOT: one line on what you sold and to whom, in categories not brand names. */}
+    </p>
+
+    <p>
+      <strong>Now product.</strong> I'm in a product group, which means I'm on the other end of
+      the requests I used to carry. It's a useful vantage and an uncomfortable one — you find out
+      how many of the asks you relayed were real, and how many were a symptom of something else.
+      {/* SLOT: what you work on now, at the category level. */}
+    </p>
+
+    <h2>What this site is</h2>
+    <p>
+      A field guide rather than a blog. The difference is structure: a feed buries everything
+      older than a month, and a guide is meant to be returned to. It's organized by what you came
+      for — a situation, a practice, a failure, or something arriving next — not by when I
+      happened to write it.
+    </p>
+
+    <h2 id="on-customer-stories">On customer stories</h2>
+    <p>
+      Everything drawn from real work is composited. Details from separate engagements get
+      recombined, numbers are rounded or synthesized, and identifying specifics are removed or
+      changed. Where a story needs a concrete setting, I use a fictional one and say so —
+      <a href="/writing/state-of-zava/">the State of Zava</a> is the recurring example.
+    </p>
+    <p>
+      This isn't hedging. Vague anonymization — "a large customer in a regulated industry" — is
+      worse writing and worse reading. A named composite lets the specifics stay sharp while the
+      client stays unidentifiable. Anything with the composite marker at the top follows that
+      convention.
+    </p>
+
+    <h2>Disclosure</h2>
+    <p>
+      I work in a product group in this industry, and I write about the space my employer sells
+      into. Everything here is my own view, written on my own time, and does not represent my
+      employer. I don't write about my own products, I don't publish anything I learned under
+      NDA, and where a piece touches a category my employer competes in, I say so in the piece.
+    </p>
 
     <h2>Elsewhere</h2>
     <p>
-      Add your LinkedIn, GitHub, and speaking contact here. Views are mine, not my employer's.
+      {/* SLOT: LinkedIn URL, GitHub, and anything else you want linked.
+          The footer links need the same handle. */}
+      Speaking, podcast, and review requests: <a href="mailto:hello@marissabellas.com">hello@marissabellas.com</a>
     </p>
   </div>
 

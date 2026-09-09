@@ -3,34 +3,57 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import EntryList from '../components/EntryList.astro';
 import Subscribe from '../components/Subscribe.astro';
+import { KINDS, KIND_ORDER } from '../lib/kinds';
 
-const entries = (await getCollection('writing', ({ data }) => !data.draft))
+const all = await getCollection('writing', ({ data }) => !data.draft);
+const entries = all
   .sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf())
   .slice(0, 5);
+
+const count = (kind: string) => all.filter((e) => e.data.kind === kind).length;
 ---
 
 <Base
-  title="Marissa Bellas — agent governance and cloud security"
-  description="Writing on identity, cloud security, and the systems that increasingly act on our behalf."
+  title="Marissa Bellas — a field guide to security and AI"
+  description="Field notes, patterns, postmortems, and signals on security and AI — from someone who has deployed it, sold it, and now builds it."
 >
   <h1 class="thesis">
-    <span>Agents have identities,</span>
-    <span>permissions, and a</span>
-    <span>blast radius.</span>
+    <span>Deployed it.</span>
+    <span>Sold it.</span>
+    <span>Now I build it.</span>
   </h1>
 
   <p class="standfirst hero-fade">
-    Most organizations still govern them like features. I write about what changes when an agent
-    is treated as a principal in your tenant instead of a checkbox in a product roadmap.
+    Most writing about security and AI comes from one seat. I have sat in three — delivery, then
+    sales, now product — and the view changes more than you would expect between them.
   </p>
 
   <p class="standfirst hero-fade">
-    I work in cloud security — identity, access, and what happens when software starts acting on
-    our behalf. Everything here is my own view, grounded in what actually ships.
+    This is a field guide, not a feed. What actually happens when this technology meets a real
+    environment: the practices that hold, the mistakes that repeat, and the ones I made myself.
   </p>
 
   <section class="section">
-    <h2>Recent writing</h2>
+    <h2>The guide</h2>
+    <ul class="guide">
+      {
+        KIND_ORDER.map((kind) => (
+          <li class="guide__item">
+            <a class="guide__link" href={`/writing/#${KINDS[kind].anchor}`}>
+              {KINDS[kind].plural}
+            </a>
+            <p class="guide__blurb">{KINDS[kind].blurb}</p>
+            <p class="guide__count">
+              {count(kind) === 0 ? 'nothing published yet' : `${count(kind)} published`}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Most recent</h2>
     <EntryList entries={entries} />
   </section>
 

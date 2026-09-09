@@ -1,7 +1,9 @@
 ---
 const path = Astro.url.pathname;
 const links = [
-  { href: '/writing/', label: 'writing' },
+  // URL stays /writing/ so existing inbound links keep working; the label
+  // carries the positioning.
+  { href: '/writing/', label: 'field guide' },
   { href: '/about/', label: 'about' },
   { href: '/work/', label: 'work' },
 ];

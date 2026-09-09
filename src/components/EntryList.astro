@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { KINDS, type Kind } from '../lib/kinds';
 
 interface Props {
   entries: CollectionEntry<'writing'>[];
@@ -20,7 +21,7 @@ const stamp = (date: Date) =>
         <li class="entry">
           <div class="entry__meta">
             <time datetime={entry.data.published.toISOString()}>{stamp(entry.data.published)}</time>
-            <span>{entry.data.kind}</span>
+            <span>{KINDS[entry.data.kind as Kind].label}</span>
           </div>
           <div class="entry__body">
             <h2 class="entry__title">

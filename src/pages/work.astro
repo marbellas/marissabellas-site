@@ -2,67 +2,93 @@
 import Base from '../layouts/Base.astro';
 import Subscribe from '../components/Subscribe.astro';
 
-// This page is the reason the site is a platform and not a blog.
-// Fill it in as things happen; delete the sections you don't have yet.
-const talks = [
+// Add entries as they happen. Delete a section rather than leaving it empty —
+// an empty section reads worse than an absent one.
+const talks: { title: string; detail: string; href?: string }[] = [
+  // {
+  //   title: 'Talk title — the argument, not the topic',
+  //   detail: 'Venue, date, and one line on the claim you made.',
+  //   href: 'https://link-to-slides-or-recording',
+  // },
+];
+
+const projects: { title: string; detail: string; href?: string }[] = [
   {
-    title: 'Add your first talk here',
-    detail: 'Venue, date, and one line on the argument you made. Link the slides or recording.',
+    title: 'The State of Zava — security posture dashboard',
+    detail:
+      'A working prototype for a problem state CISOs actually have: accountability for hundreds of entities they cannot give orders to. Fully synthetic data, single HTML file, no backend.',
+    href: 'https://marbellas.github.io/security-dashboard/',
   },
 ];
 
-const projects = [
-  {
-    title: 'Add a project or tool',
-    detail:
-      'Anything a reader could go look at: a script, a reference architecture, a policy pack.',
-  },
+const invitations = [
+  'Conference and podcast conversations on security, AI, and what deployment actually costs.',
+  'Internal briefings for security teams working through agent governance for the first time.',
+  'Reviewing a draft, a reference architecture, or a policy pack before it goes wide.',
 ];
 ---
 
 <Base
   title="Work — Marissa Bellas"
-  description="Talks, projects, and ways to work with Marissa Bellas on agent governance and cloud security."
+  description="Talks, prototypes, and what Marissa Bellas will take an invitation for."
 >
   <h1 class="thesis thesis--page">
     <span>Work</span>
   </h1>
   <p class="standfirst hero-fade">
-    Talks, tools, and the things I'll take an invitation for.
+    Things I've built, rooms I've spoken in, and what I'll take an invitation for.
   </p>
 
   <section class="section">
-    <h2>Talks</h2>
+    <h2>What I'll take an invitation for</h2>
     <ul class="stack">
       {
-        talks.map((item) => (
+        invitations.map((item) => (
           <li>
-            <h3>{item.title}</h3>
-            <p>{item.detail}</p>
+            <p>{item}</p>
           </li>
         ))
       }
     </ul>
   </section>
 
-  <section class="section">
-    <h2>Projects</h2>
-    <ul class="stack">
-      {
-        projects.map((item) => (
-          <li>
-            <h3>{item.title}</h3>
-            <p>{item.detail}</p>
-          </li>
-        ))
-      }
-    </ul>
-  </section>
+  {
+    projects.length > 0 && (
+      <section class="section">
+        <h2>Projects</h2>
+        <ul class="stack">
+          {projects.map((item) => (
+            <li>
+              <h3>{item.href ? <a href={item.href}>{item.title}</a> : item.title}</h3>
+              <p>{item.detail}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  {
+    talks.length > 0 && (
+      <section class="section">
+        <h2>Talks</h2>
+        <ul class="stack">
+          {talks.map((item) => (
+            <li>
+              <h3>{item.href ? <a href={item.href}>{item.title}</a> : item.title}</h3>
+              <p>{item.detail}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
 
   <section class="section">
     <h2>Get in touch</h2>
-    <p class="empty">
-      Speaking, podcasts, and review requests: hello@marissabellas.com
+    <p>
+      Speaking, podcasts, and review requests:
+      <a href="mailto:hello@marissabellas.com">hello@marissabellas.com</a>
     </p>
   </section>
 

@@ -2,7 +2,7 @@
 title: "Agent 365 and the posture gap"
 standfirst: "Agent inventory tells you which agents exist. It doesn't tell you which ones can quietly reach your crown jewels."
 published: 2026-09-08
-kind: essay
+kind: signal
 tags: ["agent governance", "identity"]
 draft: false
 ---

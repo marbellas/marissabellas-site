@@ -504,6 +504,138 @@ body {
 }
 
 /* ---------------------------------------------------------------
+   The guide
+
+   Four entry points on the homepage. Editorial layer for the section
+   name, machine layer for the count — the same split as everywhere else.
+   --------------------------------------------------------------- */
+
+.guide {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 2rem;
+}
+
+@media (min-width: 44rem) {
+  .guide {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.5rem 3rem;
+  }
+}
+
+.guide__item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+}
+
+.guide__link {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.012em;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  align-self: flex-start;
+}
+.guide__link:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.guide__blurb {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.guide__count {
+  margin: 0.15rem 0 0;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+}
+
+/* Section jump links on the guide index. */
+.jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+}
+.jump a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.jump a:hover {
+  color: var(--ink);
+  border-bottom-color: var(--rule);
+}
+.jump__count {
+  color: var(--accent);
+}
+
+.section__blurb {
+  margin: -0.75rem 0 1.75rem;
+  max-width: var(--measure);
+  font-size: 0.9375rem;
+  color: var(--ink-soft);
+}
+
+/* ---------------------------------------------------------------
+   Provenance
+
+   The composite disclosure at the top of anything drawn from real
+   work. Deliberately quiet — it should read as a standing convention,
+   not a disclaimer someone bolted on.
+   --------------------------------------------------------------- */
+
+.provenance {
+  max-width: var(--measure);
+  margin: 0 0 2.5rem;
+  padding: 0.9rem 0 0.9rem 1.1rem;
+  border-left: 2px solid var(--accent);
+  background: var(--accent-quiet);
+}
+
+.provenance p {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.provenance a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+}
+.provenance a:hover {
+  color: var(--ink);
+  border-bottom-color: var(--accent);
+}
+
+.article-head__standfirst {
+  max-width: var(--measure);
+  margin: 0 0 1.1rem;
+  font-size: 1.1875rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+/* ---------------------------------------------------------------
    Focus
    --------------------------------------------------------------- */
 
