@@ -1,0 +1,515 @@
+/* ---------------------------------------------------------------
+   Design tokens
+
+   Editorial layer  -> Spectral (serif). Anything a human wrote.
+   Machine layer    -> IBM Plex Mono. Nav, dates, tags, code.
+   Accent           -> slate blue, used sparingly.
+   --------------------------------------------------------------- */
+
+:root {
+  --ground: #e7eae5;
+  --ground-raise: #f2f4ef;
+  --ink: #17272e;
+  --ink-soft: #55676f;
+  --accent: #4f6d8c;
+  --accent-quiet: #e3eaf1;
+  --rule: #c9cfc6;
+
+  --serif: "Spectral", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --measure: 34rem;
+  --gutter: 8.5rem;
+  --step: 1.5rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1.125rem;
+  line-height: 1.65;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------------------------------------------------------------
+   Shell
+   --------------------------------------------------------------- */
+
+.shell {
+  width: min(100% - 2.5rem, 52rem);
+  margin-inline: auto;
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+}
+.skip:focus {
+  left: 1rem;
+  top: 1rem;
+  z-index: 10;
+  padding: 0.5rem 0.75rem;
+  background: var(--ground-raise);
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+}
+
+/* ---------------------------------------------------------------
+   Header + footer
+   --------------------------------------------------------------- */
+
+.masthead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  padding: 2rem 0 3.5rem;
+}
+
+.masthead__name {
+  font-family: var(--serif);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.masthead__name:hover {
+  color: var(--accent);
+}
+
+.nav {
+  display: flex;
+  gap: 1.5rem;
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  letter-spacing: -0.01em;
+}
+
+.nav a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  padding-bottom: 0.15rem;
+  border-bottom: 1px solid transparent;
+}
+.nav a:hover {
+  color: var(--ink);
+  border-bottom-color: var(--rule);
+}
+.nav a[aria-current="page"] {
+  color: var(--ink);
+  border-bottom-color: var(--accent);
+}
+
+.colophon {
+  margin-top: 6rem;
+  padding: 1.75rem 0 3rem;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem 2rem;
+  font-family: var(--mono);
+  font-size: 0.78125rem;
+  color: var(--ink-soft);
+}
+.colophon a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+}
+.colophon a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+.colophon ul {
+  display: flex;
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---------------------------------------------------------------
+   Hero — the one place the design is loud
+   --------------------------------------------------------------- */
+
+.thesis {
+  max-width: 20ch;
+  margin: 0 0 2.25rem;
+  font-size: clamp(2.5rem, 6.4vw, 4.4rem);
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: -0.028em;
+  text-wrap: balance;
+}
+
+.thesis span {
+  display: block;
+}
+
+/* Section pages get the same treatment one step down the scale. */
+.thesis--page {
+  font-size: clamp(2rem, 4.6vw, 3rem);
+  max-width: 24ch;
+  margin-bottom: 1.5rem;
+}
+
+.standfirst {
+  max-width: var(--measure);
+  margin: 0 0 1.25rem;
+  font-size: 1.1875rem;
+  color: var(--ink-soft);
+}
+.standfirst strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* One orchestrated load moment, and nothing else on the page moves. */
+@media (prefers-reduced-motion: no-preference) {
+  .thesis span,
+  .hero-fade {
+    animation: rise 620ms cubic-bezier(0.2, 0.6, 0.2, 1) both;
+  }
+  .thesis span:nth-child(2) {
+    animation-delay: 90ms;
+  }
+  .thesis span:nth-child(3) {
+    animation-delay: 180ms;
+  }
+  .hero-fade {
+    animation-delay: 300ms;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------------------------------------------------------------
+   Entry list — metadata hangs in the left gutter
+   --------------------------------------------------------------- */
+
+.entries {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--rule);
+}
+
+.entry {
+  display: grid;
+  gap: 0.35rem 2rem;
+  padding: 1.6rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.entry__meta {
+  font-family: var(--mono);
+  font-size: 0.78125rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+.entry__title {
+  margin: 0;
+  font-size: 1.3125rem;
+  font-weight: 600;
+  line-height: 1.28;
+  letter-spacing: -0.012em;
+}
+.entry__title a {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.entry__title a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.entry__standfirst {
+  margin: 0.3rem 0 0;
+  max-width: var(--measure);
+  font-size: 1rem;
+  color: var(--ink-soft);
+}
+
+@media (min-width: 56rem) {
+  .entry {
+    grid-template-columns: var(--gutter) minmax(0, 1fr);
+  }
+  .entry__meta {
+    grid-column: 1;
+    justify-content: flex-end;
+    text-align: right;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.2rem;
+    padding-top: 0.3rem;
+  }
+  .entry__body {
+    grid-column: 2;
+  }
+}
+
+/* ---------------------------------------------------------------
+   Long-form article
+   --------------------------------------------------------------- */
+
+.article-head {
+  padding-bottom: 2rem;
+  margin-bottom: 2.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.article-head h1 {
+  margin: 0 0 0.9rem;
+  max-width: 24ch;
+  font-size: clamp(2rem, 4.6vw, 3rem);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.024em;
+  text-wrap: balance;
+}
+
+.article-head__meta {
+  font-family: var(--mono);
+  font-size: 0.78125rem;
+  color: var(--ink-soft);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
+.prose {
+  max-width: var(--measure);
+}
+
+.prose > * + * {
+  margin-top: var(--step);
+}
+
+.prose h2 {
+  margin-top: 3rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.016em;
+}
+
+.prose h3 {
+  margin-top: 2.25rem;
+  font-size: 1.1875rem;
+  font-weight: 600;
+}
+
+.prose a {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent);
+}
+.prose a:hover {
+  color: var(--accent);
+}
+
+.prose blockquote {
+  margin-inline: 0;
+  padding-left: 1.25rem;
+  border-left: 2px solid var(--accent);
+  color: var(--ink-soft);
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.25rem;
+}
+.prose li + li {
+  margin-top: 0.4rem;
+}
+
+.prose code {
+  font-family: var(--mono);
+  font-size: 0.875em;
+  background: var(--ground-raise);
+  padding: 0.1em 0.35em;
+  border: 1px solid var(--rule);
+}
+
+.prose pre {
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  padding: 1rem 1.15rem;
+  overflow-x: auto;
+  background: var(--ground-raise) !important;
+  border: 1px solid var(--rule);
+}
+.prose pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+}
+
+.prose img {
+  max-width: 100%;
+  height: auto;
+}
+
+.prose hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+}
+
+/* ---------------------------------------------------------------
+   Subscribe
+   --------------------------------------------------------------- */
+
+.subscribe {
+  margin-top: 4.5rem;
+  padding: 1.75rem 0 0;
+  border-top: 2px solid var(--ink);
+  max-width: var(--measure);
+}
+
+.subscribe h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+}
+
+.subscribe p {
+  margin: 0 0 1.1rem;
+  font-size: 1rem;
+  color: var(--ink-soft);
+}
+
+.subscribe__form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.subscribe input[type="email"] {
+  flex: 1 1 15rem;
+  min-width: 0;
+  font-family: var(--mono);
+  font-size: 0.875rem;
+  padding: 0.7rem 0.85rem;
+  color: var(--ink);
+  background: var(--ground-raise);
+  border: 1px solid var(--rule);
+  border-radius: 0;
+}
+.subscribe input[type="email"]::placeholder {
+  color: var(--ink-soft);
+}
+.subscribe input[type="email"]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: var(--accent);
+}
+
+.subscribe button {
+  font-family: var(--mono);
+  font-size: 0.875rem;
+  padding: 0.7rem 1.15rem;
+  color: var(--ground-raise);
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  cursor: pointer;
+}
+.subscribe button:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.subscribe__note {
+  margin: 0.85rem 0 0;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+}
+
+/* ---------------------------------------------------------------
+   Simple page sections
+   --------------------------------------------------------------- */
+
+.section {
+  margin-top: 4.5rem;
+}
+
+.section > h2 {
+  margin: 0 0 1.5rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid var(--rule);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--ink-soft);
+}
+
+.stack {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.stack > li + li {
+  margin-top: 1.4rem;
+}
+.stack h3 {
+  margin: 0 0 0.15rem;
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+.stack p {
+  margin: 0;
+  max-width: var(--measure);
+  font-size: 1rem;
+  color: var(--ink-soft);
+}
+
+.empty {
+  font-family: var(--mono);
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+  max-width: var(--measure);
+}
+
+/* ---------------------------------------------------------------
+   Focus
+   --------------------------------------------------------------- */
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
