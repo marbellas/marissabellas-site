@@ -3,7 +3,7 @@
 
    Editorial layer  -> Spectral (serif). Anything a human wrote.
    Machine layer    -> IBM Plex Mono. Nav, dates, tags, code.
-   Accent           -> amber, the "review required" state.
+   Accent           -> slate blue, used sparingly.
    --------------------------------------------------------------- */
 
 :root {
@@ -11,7 +11,8 @@
   --ground-raise: #f2f4ef;
   --ink: #17272e;
   --ink-soft: #55676f;
-  --amber: #b26a00;
+  --accent: #4f6d8c;
+  --accent-quiet: #e3eaf1;
   --rule: #c9cfc6;
 
   --serif: "Spectral", Georgia, "Times New Roman", serif;
@@ -88,7 +89,7 @@ body {
   text-decoration: none;
 }
 .masthead__name:hover {
-  color: var(--amber);
+  color: var(--accent);
 }
 
 .nav {
@@ -111,7 +112,7 @@ body {
 }
 .nav a[aria-current="page"] {
   color: var(--ink);
-  border-bottom-color: var(--amber);
+  border-bottom-color: var(--accent);
 }
 
 .colophon {
@@ -132,8 +133,8 @@ body {
   border-bottom: 1px solid var(--rule);
 }
 .colophon a:hover {
-  color: var(--amber);
-  border-bottom-color: var(--amber);
+  color: var(--accent);
+  border-bottom-color: var(--accent);
 }
 .colophon ul {
   display: flex;
@@ -248,8 +249,8 @@ body {
   border-bottom: 1px solid transparent;
 }
 .entry__title a:hover {
-  color: var(--amber);
-  border-bottom-color: var(--amber);
+  color: var(--accent);
+  border-bottom-color: var(--accent);
 }
 
 .entry__standfirst {
@@ -331,16 +332,16 @@ body {
 .prose a {
   color: var(--ink);
   text-decoration: none;
-  border-bottom: 1px solid var(--amber);
+  border-bottom: 1px solid var(--accent);
 }
 .prose a:hover {
-  color: var(--amber);
+  color: var(--accent);
 }
 
 .prose blockquote {
   margin-inline: 0;
   padding-left: 1.25rem;
-  border-left: 2px solid var(--amber);
+  border-left: 2px solid var(--accent);
   color: var(--ink-soft);
 }
 
@@ -430,9 +431,9 @@ body {
   color: var(--ink-soft);
 }
 .subscribe input[type="email"]:focus-visible {
-  outline: 2px solid var(--amber);
+  outline: 2px solid var(--accent);
   outline-offset: 1px;
-  border-color: var(--amber);
+  border-color: var(--accent);
 }
 
 .subscribe button {
@@ -446,8 +447,8 @@ body {
   cursor: pointer;
 }
 .subscribe button:hover {
-  background: var(--amber);
-  border-color: var(--amber);
+  background: var(--accent);
+  border-color: var(--accent);
 }
 
 .subscribe__note {
@@ -508,7 +509,7 @@ body {
 
 a:focus-visible,
 button:focus-visible {
-  outline: 2px solid var(--amber);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 1px;
 }

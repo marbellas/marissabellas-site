@@ -3,7 +3,7 @@ title: "Agent 365 and the posture gap"
 standfirst: "Agent inventory tells you which agents exist. It doesn't tell you which ones can quietly reach your crown jewels."
 published: 2026-09-08
 kind: essay
-tags: ["agent governance", "cspm", "microsoft"]
+tags: ["agent governance", "identity"]
 draft: false
 ---
 
@@ -18,7 +18,7 @@ A few things the layout is built to handle:
 Body text sits on a 34rem measure, which lands under 80 characters per line. Long
 paragraphs stay readable without you doing anything.
 
-> Pull quotes get an amber rule. Use them for a claim you want a skimming reader
+> Pull quotes get an accent rule. Use them for a claim you want a skimming reader
 > to land on, not for decoration.
 
 Inline `code` and identifiers render in monospace, and fenced blocks get syntax
