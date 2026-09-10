@@ -49,7 +49,7 @@
   --fs-lg: 1.375rem;
   --fs-xl: 2rem;
   --fs-2xl: clamp(2rem, 4.6vw, 3rem);
-  --fs-hero: clamp(2.25rem, 7vw, 4.75rem);
+  --fs-hero: clamp(2.5rem, 6vw, 4.5rem);
 
   --measure: 34rem;
   --gutter: 8.5rem;
@@ -158,19 +158,19 @@ body {
   display: flex;
   gap: 1.5rem;
   font-family: var(--mono);
-  font-size: var(--fs-sm);
+  font-size: 0.875rem;
   letter-spacing: -0.01em;
 }
 
 .nav a {
-  color: var(--ink-soft);
+  color: var(--ink);
   text-decoration: none;
   padding-bottom: 0.15rem;
   border-bottom: 1px solid transparent;
 }
 .nav a:hover {
-  color: var(--ink);
-  border-bottom-color: var(--rule-bright);
+  color: var(--accent);
+  border-bottom-color: var(--accent);
 }
 .nav a[aria-current="page"] {
   color: var(--ink);
@@ -211,19 +211,21 @@ body {
 }
 
 /* ---------------------------------------------------------------
-   Hero — machine layer, at full volume
+   Hero — editorial layer leads
+
+   The serif carries the argument; monospace is reserved for the
+   machine layer (nav, labels, dates, tags, code) and never used for
+   something a person is meant to read at length.
    --------------------------------------------------------------- */
 
 .thesis {
-  max-width: 21ch;
+  max-width: 24ch;
   margin: 0 0 2rem;
-  font-family: var(--mono);
+  font-family: var(--serif);
   font-size: var(--fs-hero);
-  font-weight: 500;
-  line-height: 1.02;
-  letter-spacing: -0.045em;
-  text-transform: uppercase;
-  text-wrap: balance;
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.022em;
 }
 
 .thesis span {
@@ -240,14 +242,10 @@ body {
   font-size: var(--fs-xl);
   max-width: 24ch;
   margin-bottom: 1.25rem;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
 }
 .thesis--page span:last-child {
   color: var(--ink);
-}
-.thesis--page::before {
-  content: "// ";
-  color: var(--accent);
 }
 
 .standfirst {
@@ -770,11 +768,10 @@ body {
 
 .subscribe h2 {
   margin: 0 0 0.4rem;
-  font-family: var(--mono);
-  font-size: var(--fs-sm);
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.012em;
   color: var(--ink);
 }
 
@@ -846,16 +843,11 @@ body {
   margin: 0 0 1.25rem;
   padding-bottom: 0.6rem;
   border-bottom: 1px solid var(--rule);
-  font-family: var(--mono);
-  font-size: var(--fs-xs);
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-}
-.section > h2::before {
-  content: "── ";
-  color: var(--rule-bright);
+  font-family: var(--serif);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.008em;
+  color: var(--ink);
 }
 
 .section__blurb {
