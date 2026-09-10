@@ -1,0 +1,58 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { KINDS, type Kind } from '../lib/kinds';
+
+interface Props {
+  current: CollectionEntry<'writing'>;
+}
+
+const { current } = Astro.props;
+
+// Newest first, matching the order of the guide itself.
+const all = (await getCollection('writing', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.published.valueOf() - a.data.published.valueOf()
+);
+
+const here = all.findIndex((e) => e.id === current.id);
+
+// "Previous" reads as older, which is one step further down the list.
+const older = here >= 0 ? all[here + 1] : undefined;
+const newer = here > 0 ? all[here - 1] : undefined;
+
+const link = (entry: CollectionEntry<'writing'>) => ({
+  href: `/writing/${entry.id}/`,
+  title: entry.data.title,
+  kind: entry.data.kind as Kind,
+});
+
+const prev = older && link(older);
+const next = newer && link(newer);
+---
+
+{
+  (prev || next) && (
+    <nav class="pager" aria-label="More from the field guide">
+      {prev ? (
+        <a class="pager__link" href={prev.href} style={`--channel: var(--k-${prev.kind})`}>
+          <span class="pager__dir">&lsaquo; Previous</span>
+          <span class="pager__kind">{KINDS[prev.kind].label}</span>
+          <span class="pager__title">{prev.title}</span>
+        </a>
+      ) : (
+        <span />
+      )}
+
+      {next && (
+        <a
+          class="pager__link pager__link--next"
+          href={next.href}
+          style={`--channel: var(--k-${next.kind})`}
+        >
+          <span class="pager__dir">Next &rsaquo;</span>
+          <span class="pager__kind">{KINDS[next.kind].label}</span>
+          <span class="pager__title">{next.title}</span>
+        </a>
+      )}
+    </nav>
+  )
+}

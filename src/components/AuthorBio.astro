@@ -1,0 +1,26 @@
+---
+import { existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+
+// The headshot is supplied separately and may not be there yet. Checking
+// at build time means a missing file renders a monogram rather than a
+// broken image icon.
+const photoPath = fileURLToPath(new URL('../../public/images/marissa.jpg', import.meta.url));
+const hasPhoto = existsSync(photoPath);
+---
+
+<aside class="byline">
+  {
+    hasPhoto ? (
+      <img class="byline__photo" src="/images/marissa.jpg" alt="Marissa Bellas" width="56" height="56" loading="lazy" />
+    ) : (
+      <span class="byline__photo byline__photo--initials" aria-hidden="true">
+        MB
+      </span>
+    )
+  }
+  <p class="byline__text">
+    <strong>Marissa Bellas</strong> has worked on security and AI from delivery, sales, and now
+    customer experience. <a href="/about/">More about the guide &rsaquo;</a>
+  </p>
+</aside>
