@@ -4,7 +4,7 @@ standfirst: "Agent inventory tells you which agents exist. It doesn't tell you w
 published: 2026-09-08
 kind: signal
 tags: ["agent governance", "identity"]
-draft: false
+draft: true
 ---
 
 This file is a placeholder with your real subject in it, so you can see how a
