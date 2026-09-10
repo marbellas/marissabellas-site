@@ -21,34 +21,76 @@ const stamp = (date: Date) =>
 ---
 
 <Base title={`${title} — Marissa Bellas`} description={standfirst}>
-  <article style={`--channel: var(--k-${kind})`}>
+  <article class="article" style={`--channel: var(--k-${kind})`}>
     <header class="article-head">
       <h1>{title}</h1>
       <p class="article-head__standfirst">{standfirst}</p>
-      <div class="article-head__meta">
-        <time datetime={published.toISOString()}>{stamp(published)}</time>
-        <span class="entry__kind">{KINDS[kind as Kind].label}</span>
-        {updated && <span>updated {stamp(updated)}</span>}
-        {tags.length > 0 && <span>{tags.join(', ')}</span>}
-      </div>
     </header>
 
-    {
-      composite && (
-        <aside class="provenance">
-          <p>
-            Drawn from real work and composited. Details from separate engagements are recombined,
-            numbers are synthesized or rounded, and identifying specifics are changed. Nothing here
-            identifies a client.{' '}
-            <a href="/about/#on-customer-stories">Why it's written this way.</a>
-          </p>
-        </aside>
-      )
-    }
-
     <div class="prose">
+      {/* Everything about the piece rather than in it. This lives inside
+          .prose so it shares a float context with the sidenotes — the two
+          occupy the same margin, and only float + clear can stack them
+          without overlap. On narrow screens it sits under the title,
+          where a byline has always gone. */}
+      <aside class="article__rail">
+      <dl class="meta">
+        <div class="meta__row">
+          <dt>Published</dt>
+          <dd><time datetime={published.toISOString()}>{stamp(published)}</time></dd>
+        </div>
+        {
+          updated && (
+            <div class="meta__row">
+              <dt>Updated</dt>
+              <dd>
+                <time datetime={updated.toISOString()}>{stamp(updated)}</time>
+              </dd>
+            </div>
+          )
+        }
+        <div class="meta__row">
+          <dt>Category</dt>
+          <dd>
+            <a class="meta__kind" href={`/writing/#${KINDS[kind as Kind].anchor}`}>
+              <span class="meta__marker" aria-hidden="true" />
+              {KINDS[kind as Kind].label}
+            </a>
+          </dd>
+        </div>
+        {
+          tags.length > 0 && (
+            <div class="meta__row">
+              <dt>Tags</dt>
+              <dd>
+                <ul class="meta__tags">
+                  {tags.map((tag) => (
+                    <li>{tag}</li>
+                  ))}
+                </ul>
+              </dd>
+            </div>
+          )
+        }
+      </dl>
+
+      {
+        composite && (
+          <div class="provenance">
+            <p>
+              Drawn from real work and composited. Details from separate engagements are
+              recombined, numbers are synthesized or rounded, and identifying specifics are
+              changed. Nothing here identifies a client.{' '}
+              <a href="/about/#on-customer-stories">Why it's written this way.</a>
+            </p>
+          </div>
+        )
+      }
+      </aside>
+
       <slot />
     </div>
   </article>
+
   <Subscribe />
 </Base>

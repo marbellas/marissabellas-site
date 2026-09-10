@@ -11,7 +11,8 @@ import Subscribe from '../components/Subscribe.astro';
     <span>About</span>
   </h1>
 
-  <div class="prose hero-fade">
+  <div class="railed">
+    <div class="prose hero-fade">
     <p>
       I'm Marissa Bellas. I've worked on security and AI from three seats, and this site exists
       because the view from each one contradicts the others in ways that turned out to matter.
@@ -80,6 +81,25 @@ import Subscribe from '../components/Subscribe.astro';
           The footer links need the same handle. */}
       Speaking, podcast, and review requests: <a href="mailto:hello@marissabellas.com">hello@marissabellas.com</a>
     </p>
+    </div>
+
+    <aside class="railed__rail">
+      {/* SLOT (item 8): headshot goes above this list. */}
+      <dl class="meta">
+        <div class="meta__row">
+          <dt>Seats</dt>
+          <dd>Delivery, then sales, now customer experience</dd>
+        </div>
+        <div class="meta__row">
+          <dt>Writes about</dt>
+          <dd>Security, AI, and what deployment actually costs</dd>
+        </div>
+        <div class="meta__row">
+          <dt>Contact</dt>
+          <dd><a href="mailto:hello@marissabellas.com">hello@marissabellas.com</a></dd>
+        </div>
+      </dl>
+    </aside>
   </div>
 
   <Subscribe />

@@ -557,8 +557,218 @@ body {
 }
 
 /* ---------------------------------------------------------------
-   Long-form article
+   Page rails
+
+   Below 64rem everything is one column. At and above it, pages that
+   have something to put beside the reading column get a rail, and
+   pages that do not centre the column instead of leaving a gutter of
+   dead space on the right.
    --------------------------------------------------------------- */
+
+.railed__rail {
+  margin-top: 2.5rem;
+}
+
+/* The first section inside a railed column already has the rail's top
+   alignment; it does not need the standard section gap above it too. */
+.section--flush {
+  margin-top: 0;
+}
+
+.card {
+  border: 1px solid var(--rule);
+  background: var(--ground-raise);
+  padding: 1rem 1.1rem 1.15rem;
+}
+
+.card__title {
+  margin: 0 0 0.4rem;
+  font-family: var(--serif);
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+
+.card__body {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+.card__body + .card__body {
+  margin-top: 0.5rem;
+}
+.card__body a {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent);
+  overflow-wrap: anywhere;
+}
+.card__body a:hover {
+  color: var(--accent);
+}
+
+@media (min-width: 64rem) {
+  .railed {
+    display: grid;
+    grid-template-columns: minmax(0, var(--measure)) 15rem;
+    gap: 3.5rem;
+    align-items: start;
+  }
+  .railed__rail {
+    position: sticky;
+    top: 2rem;
+    margin-top: 0;
+  }
+}
+
+/* No rail to show: centre the reading column rather than pinning it
+   left against an empty right half. */
+@media (min-width: 64rem) {
+  .centred {
+    max-width: 46rem;
+    margin-inline: auto;
+  }
+}
+
+/* ---------------------------------------------------------------
+   Long-form article
+
+   Title full width, then text and a sticky rail carrying everything
+   *about* the piece rather than in it.
+   --------------------------------------------------------------- */
+
+/* The article reserves a right margin, and both the meta block and the
+   sidenotes float into it. They share one float context so `clear: right`
+   stacks them in document order and nothing can overlap.
+
+   This is why the meta block is not sticky: a pinned block and floated
+   notes competing for the same 14rem will collide as soon as a note
+   appears near the top of a piece. Stacking correctly beats staying put. */
+@media (min-width: 64rem) {
+  .article {
+    padding-right: calc(14rem + 3.5rem);
+  }
+  .article__rail {
+    float: right;
+    clear: right;
+    width: 14rem;
+    margin: 0.35rem calc(-14rem - 3.5rem) 1.5rem 0;
+    max-width: none;
+  }
+}
+
+.article__rail {
+  margin-bottom: 2.5rem;
+}
+
+.meta {
+  margin: 0 0 1.5rem;
+  padding: 0;
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  line-height: 1.6;
+}
+
+.meta__row + .meta__row {
+  margin-top: 0.7rem;
+}
+
+.meta dt {
+  color: var(--ink-faint);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: var(--fs-2xs);
+}
+
+.meta dd {
+  margin: 0.15rem 0 0;
+  color: var(--ink-soft);
+}
+
+.meta__kind {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+.meta__kind:hover {
+  color: var(--channel, var(--accent));
+}
+
+.meta__marker {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--channel, var(--accent));
+}
+
+.meta__tags {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.6rem;
+}
+
+/* ---------------------------------------------------------------
+   Sidenotes
+
+   Footnotes are lifted out of the pile at the bottom and set beside
+   the line that refers to them. Below 64rem there is no room for a
+   margin, so they fold inline under the paragraph instead.
+   --------------------------------------------------------------- */
+
+.sidenote {
+  display: block;
+  margin: 0.85rem 0 1.25rem;
+  padding-left: 0.85rem;
+  border-left: 2px solid var(--rule-bright);
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  line-height: 1.65;
+  color: var(--ink-soft);
+  max-width: var(--measure);
+}
+
+.sidenote p {
+  margin: 0;
+}
+.sidenote p + p {
+  margin-top: 0.5rem;
+}
+
+.sidenote__num {
+  color: var(--accent);
+  margin-right: 0.4rem;
+}
+
+.sidenote-ref {
+  font-family: var(--mono);
+  font-size: 0.7em;
+  vertical-align: super;
+  line-height: 0;
+  color: var(--accent);
+  text-decoration: none;
+  padding-inline: 0.1em;
+}
+
+@media (min-width: 64rem) {
+  /* Floated rather than absolutely positioned. Absolute notes sit exactly
+     where you put them and then overlap each other when two references
+     fall close together; float + clear stacks them instead, which is why
+     Tufte CSS floats. */
+  .sidenote {
+    float: right;
+    clear: right;
+    width: 14rem;
+    margin: 0.3rem calc(-14rem - 3.5rem) 1.1rem 0;
+    padding: 0;
+    border-left: 0;
+    max-width: none;
+  }
+}
 
 .article-head {
   padding-bottom: 2rem;
@@ -596,12 +806,31 @@ body {
   color: var(--channel, var(--accent));
 }
 
+/* The measure lives on the children, not the container. That lets code
+   blocks and figures fill the whole column while text stays at a
+   readable line length — and means code rarely needs to scroll. */
 .prose {
+  max-width: none;
+}
+
+.prose > * {
   max-width: var(--measure);
 }
 
 .prose > * + * {
   margin-top: var(--step);
+}
+
+.prose > pre,
+.prose > figure,
+.prose > p:has(> img) {
+  max-width: none;
+}
+
+/* Floated into the margin, so the measure does not apply. */
+.prose > .article__rail,
+.prose > .sidenote {
+  max-width: none;
 }
 
 .prose h2 {
@@ -650,6 +879,10 @@ body {
   border: 1px solid var(--rule);
 }
 
+/* Code fills the column, and wraps rather than scrolling. A horizontal
+   scrollbar hides the end of the line you most need to read; a wrapped
+   line is still the same line. overflow-x stays as a backstop for
+   anything unbreakable, like a long URL. */
 .prose pre {
   font-family: var(--mono);
   font-size: var(--fs-sm);
@@ -658,6 +891,8 @@ body {
   overflow-x: auto;
   background: var(--ground-sink) !important;
   border: 1px solid var(--rule);
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
 }
 .prose pre code {
   background: none;
@@ -676,11 +911,9 @@ body {
   }
 }
 
-/* Figures break out past the text measure — a dashboard screenshot at
-   34rem is unreadable. The paragraph deliberately overflows .prose to
-   the right, stopping short of the shell edge. Markdown gives us
-   <p><img></p> followed by <p><em>caption</em></p>, so we style that
-   pair rather than asking authors to hand-write <figure>. */
+/* Markdown gives us <p><img></p> followed by <p><em>caption</em></p>,
+   so we style that pair rather than asking authors to hand-write
+   <figure>. Both fill the column. */
 .prose img {
   display: block;
   width: 100%;
@@ -689,18 +922,16 @@ body {
   background: var(--ground-sink);
 }
 
-.prose p:has(> img) {
-  width: min(calc(100vw - 2.5rem), 48rem);
+.prose > p:has(> img) {
   margin-top: 2.5rem;
-  margin-inline: 0;
 }
 
-.prose p:has(> img) + p {
-  width: min(calc(100vw - 2.5rem), 48rem);
+.prose > p:has(> img) + p {
+  max-width: none;
   margin-top: 0.7rem;
 }
 
-.prose p:has(> img) + p em {
+.prose > p:has(> img) + p em {
   display: block;
   font-family: var(--mono);
   font-style: normal;

@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import rehypeSidenotes from './src/lib/rehype-sidenotes.mjs';
 
 export default defineConfig({
   // Change this to your real domain before you deploy.
@@ -13,5 +14,8 @@ export default defineConfig({
       themes: { light: 'github-light', dark: 'github-dark-dimmed' },
       defaultColor: false,
     },
+    // Footnotes become margin notes beside the line that cites them,
+    // instead of a pile at the bottom the reader has to jump to.
+    rehypePlugins: [rehypeSidenotes],
   },
 });
