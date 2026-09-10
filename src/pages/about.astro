@@ -1,6 +1,12 @@
 ---
 import Base from '../layouts/Base.astro';
 import Subscribe from '../components/Subscribe.astro';
+import { hasPublicFile } from '../lib/public-file';
+
+// Drop a headshot at public/images/marissa.jpg and it appears in the rail.
+// Until then the rail simply starts at the credential list — checked at
+// build time so a missing file never renders as a broken image.
+const hasPhoto = hasPublicFile('images/marissa.jpg');
 ---
 
 <Base
@@ -10,6 +16,10 @@ import Subscribe from '../components/Subscribe.astro';
   <h1 class="thesis thesis--page">
     <span>About</span>
   </h1>
+  <p class="credential hero-fade">
+    Security and AI from three seats — deployment and delivery, then sales, now customer
+    experience.
+  </p>
 
   <div class="railed">
     <div class="prose hero-fade">
@@ -84,7 +94,18 @@ import Subscribe from '../components/Subscribe.astro';
     </div>
 
     <aside class="railed__rail">
-      {/* SLOT (item 8): headshot goes above this list. */}
+      {
+        hasPhoto && (
+          <img
+            class="headshot"
+            src="/images/marissa.jpg"
+            alt="Marissa Bellas"
+            width="240"
+            height="240"
+            loading="lazy"
+          />
+        )
+      }
       <dl class="meta">
         <div class="meta__row">
           <dt>Seats</dt>

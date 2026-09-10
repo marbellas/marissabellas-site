@@ -260,6 +260,29 @@ body {
   color: var(--ink);
 }
 
+/* One line under a page title, in the machine layer — a credential, not
+   a sentence of prose. */
+.credential {
+  max-width: var(--measure);
+  margin: -0.35rem 0 2rem;
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.headshot {
+  display: block;
+  width: 100%;
+  max-width: 11rem;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  margin-bottom: 1.25rem;
+  border: 1px solid var(--rule-bright);
+  background: var(--ground-raise);
+}
+
 /* One orchestrated load moment, and nothing else on the page moves. */
 @media (prefers-reduced-motion: no-preference) {
   .thesis span,
