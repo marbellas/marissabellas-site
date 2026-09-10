@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { getImage } from 'astro:assets';
 import Base from './Base.astro';
 import Subscribe from '../components/Subscribe.astro';
 import AuthorBio from '../components/AuthorBio.astro';
@@ -11,7 +12,14 @@ interface Props {
 }
 
 const { entry } = Astro.props;
-const { title, standfirst, published, updated, kind, tags, composite } = entry.data;
+const { title, standfirst, published, updated, kind, tags, composite, image } = entry.data;
+
+// A post with a hero image shares that image; everything else falls back
+// to the generated site card. Rendered at the standard card size so the
+// crop is predictable rather than whatever the source happened to be.
+const share = image
+  ? (await getImage({ src: image, width: 1200, height: 630, format: 'png', fit: 'cover' })).src
+  : undefined;
 
 const stamp = (date: Date) =>
   date.toLocaleDateString('en-US', {
@@ -22,7 +30,12 @@ const stamp = (date: Date) =>
   });
 ---
 
-<Base title={`${title} — Marissa Bellas`} description={standfirst}>
+<Base
+  title={`${title} — Marissa Bellas`}
+  description={standfirst}
+  image={share}
+  type="article"
+>
   <article class="article" style={`--channel: var(--k-${kind})`}>
     <header class="article-head">
       <h1>{title}</h1>
