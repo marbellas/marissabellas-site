@@ -25,7 +25,10 @@
   --ground-sink: #080b0d;
   --ink: #dfe7ea;
   --ink-soft: #8b9ba2;
-  --ink-faint: #5b6a71;
+  /* 5.08:1 on --ground. The previous #5b6a71 measured 3.36:1, which is
+     below AA for body text and was carrying real content: dates, tags,
+     captions and the subscribe note. */
+  --ink-faint: #78878e;
   --rule: #222d32;
   --rule-bright: #35454d;
   --accent: #e0a33f;
@@ -65,7 +68,8 @@
     --ground-sink: #e6eae7;
     --ink: #111a1e;
     --ink-soft: #536068;
-    --ink-faint: #7d8b92;
+    /* 5.10:1 on --ground, 5.59:1 on --ground-raise. Was #7d8b92 at 3.20:1. */
+    --ink-faint: #5c6a71;
     --rule: #d2d9d5;
     --rule-bright: #b3bdb8;
     --accent: #9a6412;
@@ -283,23 +287,25 @@ body {
   background: var(--ground-raise);
 }
 
-/* One orchestrated load moment, and nothing else on the page moves. */
+/* One orchestrated load moment, and nothing else on the page moves.
+   Held to 200ms: past that a page-load fade stops reading as the page
+   arriving and starts reading as the page being slow. */
 @media (prefers-reduced-motion: no-preference) {
   .thesis span,
   .hero-fade {
-    animation: rise 620ms cubic-bezier(0.2, 0.6, 0.2, 1) both;
+    animation: rise 200ms cubic-bezier(0.2, 0.6, 0.2, 1) both;
   }
   .thesis span:nth-child(2) {
-    animation-delay: 90ms;
+    animation-delay: 45ms;
   }
   .thesis span:nth-child(3) {
-    animation-delay: 180ms;
+    animation-delay: 90ms;
   }
   .thesis span:nth-child(4) {
-    animation-delay: 270ms;
+    animation-delay: 135ms;
   }
   .hero-fade {
-    animation-delay: 300ms;
+    animation-delay: 150ms;
   }
 }
 
@@ -1224,7 +1230,8 @@ body {
   border-radius: 0;
 }
 .subscribe input[type="email"]::placeholder {
-  color: var(--ink-faint);
+  color: var(--ink-soft);
+  opacity: 1;
 }
 .subscribe input[type="email"]:focus-visible {
   outline: 2px solid var(--accent);
@@ -1249,10 +1256,14 @@ body {
   color: var(--ground);
 }
 
+/* Same 12px mono as every other piece of meta on the site, 8px below the
+   form it annotates. It was 11px and floating 14px clear, reading as its
+   own paragraph rather than a footnote to the field. */
 .subscribe__note {
-  margin: 0.85rem 0 0;
+  margin: 0.5rem 0 0;
   font-family: var(--mono);
-  font-size: var(--fs-2xs);
+  font-size: 0.75rem;
+  line-height: 1.5;
   color: var(--ink-faint);
 }
 
