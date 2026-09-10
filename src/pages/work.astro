@@ -1,6 +1,8 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Subscribe from '../components/Subscribe.astro';
+import zavaThumb from '../content/writing/images/zava-overview.png';
 
 // Add entries as they happen. Delete a section rather than leaving it empty —
 // an empty section reads worse than an absent one.
@@ -12,12 +14,13 @@ const talks: { title: string; detail: string; href?: string }[] = [
   // },
 ];
 
-const projects: { title: string; detail: string; href?: string }[] = [
+const projects = [
   {
     title: 'The State of Zava — security posture dashboard',
     detail:
       'A working prototype for a problem state CISOs actually have: accountability for hundreds of entities they cannot give orders to. Fully synthetic data, single HTML file, no backend.',
     href: 'https://marbellas.github.io/security-dashboard/',
+    thumb: zavaThumb,
   },
 ];
 
@@ -36,7 +39,7 @@ const invitations = [
     <span>Work</span>
   </h1>
   <p class="standfirst hero-fade">
-    Things I've built, rooms I've spoken in, and what I'll take an invitation for.
+    Things I've built, and what I'll take an invitation for.
   </p>
 
   <div class="railed">
@@ -60,9 +63,22 @@ const invitations = [
         <h2>Projects</h2>
         <ul class="stack">
           {projects.map((item) => (
-            <li>
-              <h3>{item.href ? <a href={item.href}>{item.title}</a> : item.title}</h3>
-              <p>{item.detail}</p>
+            <li class="project">
+              {item.thumb && (
+                <a class="project__thumb" href={item.href} tabindex="-1" aria-hidden="true">
+                  <Image
+                    src={item.thumb}
+                    alt=""
+                    widths={[180, 360]}
+                    sizes="7.5rem"
+                    loading="lazy"
+                  />
+                </a>
+              )}
+              <div class="project__body">
+                <h3>{item.href ? <a href={item.href}>{item.title}</a> : item.title}</h3>
+                <p>{item.detail}</p>
+              </div>
             </li>
           ))}
         </ul>
@@ -92,6 +108,14 @@ const invitations = [
       <div class="card">
         <h2 class="card__title">Get in touch</h2>
         <p class="card__body">Speaking, podcasts, and review requests.</p>
+        <p class="card__actions">
+          <a
+            class="button"
+            href="mailto:hello@marissabellas.com?subject=Speaking%20invitation"
+          >
+            Invite me to speak
+          </a>
+        </p>
         <p class="card__body">
           <a href="mailto:hello@marissabellas.com">hello@marissabellas.com</a>
         </p>
