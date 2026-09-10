@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- The masthead mark: ▚, quadrants filled on one diagonal.
+       Ground follows the viewer's theme; the mark stays amber. -->
+  <style>
+    .ground { fill: #0d1214; }
+    @media (prefers-color-scheme: light) {
+      .ground { fill: #f3f5f3; }
+    }
+  </style>
+  <rect class="ground" width="32" height="32" />
+  <rect x="4" y="4" width="12" height="12" fill="#e0a33f" />
+  <rect x="16" y="16" width="12" height="12" fill="#e0a33f" />
+</svg>

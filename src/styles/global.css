@@ -1,26 +1,81 @@
 /* ---------------------------------------------------------------
    Design tokens
 
-   Editorial layer  -> Spectral (serif). Anything a human wrote.
-   Machine layer    -> IBM Plex Mono. Nav, dates, tags, code.
-   Accent           -> slate blue, used sparingly.
+   Dark first. The site reads as an instrument — a console someone in
+   security would recognize — so the dark palette is the default and
+   light is the override, not the other way round.
+
+   Two type layers, and the split still carries meaning:
+     Machine layer -> IBM Plex Mono. Chrome, labels, counts, code,
+                      and the hero. It is the dominant voice.
+     Editorial     -> Spectral. Reserved for prose that gets read at
+                      length. Long-form in monospace is punishing, so
+                      the body stays serif no matter how loud the
+                      chrome gets.
+
+   Each of the four guide sections owns a status color, used the way a
+   severity channel is used: a thin marker, never a fill.
    --------------------------------------------------------------- */
 
 :root {
-  --ground: #e7eae5;
-  --ground-raise: #f2f4ef;
-  --ink: #17272e;
-  --ink-soft: #55676f;
-  --accent: #4f6d8c;
-  --accent-quiet: #e3eaf1;
-  --rule: #c9cfc6;
+  color-scheme: dark;
+
+  --ground: #0d1214;
+  --ground-raise: #141c1f;
+  --ground-sink: #080b0d;
+  --ink: #dfe7ea;
+  --ink-soft: #8b9ba2;
+  --ink-faint: #5b6a71;
+  --rule: #222d32;
+  --rule-bright: #35454d;
+  --accent: #e0a33f;
+  --accent-quiet: #1e1a10;
+
+  /* Section status channels. */
+  --k-field-note: #5cb8d1;
+  --k-pattern: #7cc27a;
+  --k-postmortem: #e07a5f;
+  --k-signal: #a99bf5;
 
   --serif: "Spectral", Georgia, "Times New Roman", serif;
   --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
+  /* A scale with real jumps in it. The old one crowded thirteen sizes
+     into a 2x range, which is why everything read as the same size. */
+  --fs-2xs: 0.6875rem;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.8125rem;
+  --fs-base: 1.0625rem;
+  --fs-lg: 1.375rem;
+  --fs-xl: 2rem;
+  --fs-2xl: clamp(2rem, 4.6vw, 3rem);
+  --fs-hero: clamp(2.25rem, 7vw, 4.75rem);
+
   --measure: 34rem;
   --gutter: 8.5rem;
   --step: 1.5rem;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+
+    --ground: #f3f5f3;
+    --ground-raise: #ffffff;
+    --ground-sink: #e6eae7;
+    --ink: #111a1e;
+    --ink-soft: #536068;
+    --ink-faint: #7d8b92;
+    --rule: #d2d9d5;
+    --rule-bright: #b3bdb8;
+    --accent: #9a6412;
+    --accent-quiet: #f7efe0;
+
+    --k-field-note: #1c6f89;
+    --k-pattern: #3f7d3c;
+    --k-postmortem: #a8452a;
+    --k-signal: #5a4bb8;
+  }
 }
 
 *,
@@ -38,7 +93,7 @@ body {
   background: var(--ground);
   color: var(--ink);
   font-family: var(--serif);
-  font-size: 1.125rem;
+  font-size: var(--fs-base);
   line-height: 1.65;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
@@ -49,7 +104,7 @@ body {
    --------------------------------------------------------------- */
 
 .shell {
-  width: min(100% - 2.5rem, 52rem);
+  width: min(100% - 2.5rem, 60rem);
   margin-inline: auto;
 }
 
@@ -64,11 +119,11 @@ body {
   padding: 0.5rem 0.75rem;
   background: var(--ground-raise);
   font-family: var(--mono);
-  font-size: 0.8125rem;
+  font-size: var(--fs-sm);
 }
 
 /* ---------------------------------------------------------------
-   Header + footer
+   Masthead — a status bar, not a logo
    --------------------------------------------------------------- */
 
 .masthead {
@@ -76,17 +131,24 @@ body {
   flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
-  gap: 1rem 2rem;
-  padding: 2rem 0 3.5rem;
+  gap: 0.75rem 2rem;
+  margin-bottom: 5rem;
+  padding: 1.5rem 0 0.85rem;
+  border-bottom: 1px solid var(--rule);
 }
 
 .masthead__name {
-  font-family: var(--serif);
-  font-size: 1.0625rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
   color: var(--ink);
   text-decoration: none;
+}
+.masthead__name::before {
+  content: "▚ ";
+  color: var(--accent);
 }
 .masthead__name:hover {
   color: var(--accent);
@@ -96,7 +158,7 @@ body {
   display: flex;
   gap: 1.5rem;
   font-family: var(--mono);
-  font-size: 0.8125rem;
+  font-size: var(--fs-sm);
   letter-spacing: -0.01em;
 }
 
@@ -108,7 +170,7 @@ body {
 }
 .nav a:hover {
   color: var(--ink);
-  border-bottom-color: var(--rule);
+  border-bottom-color: var(--rule-bright);
 }
 .nav a[aria-current="page"] {
   color: var(--ink);
@@ -124,7 +186,7 @@ body {
   justify-content: space-between;
   gap: 0.75rem 2rem;
   font-family: var(--mono);
-  font-size: 0.78125rem;
+  font-size: var(--fs-xs);
   color: var(--ink-soft);
 }
 .colophon a {
@@ -138,23 +200,29 @@ body {
 }
 .colophon ul {
   display: flex;
+  flex-wrap: wrap;
   gap: 1.25rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
+.colophon p {
+  margin: 0;
+}
 
 /* ---------------------------------------------------------------
-   Hero — the one place the design is loud
+   Hero — machine layer, at full volume
    --------------------------------------------------------------- */
 
 .thesis {
-  max-width: 20ch;
-  margin: 0 0 2.25rem;
-  font-size: clamp(2.5rem, 6.4vw, 4.4rem);
-  font-weight: 600;
-  line-height: 1.06;
-  letter-spacing: -0.028em;
+  max-width: 21ch;
+  margin: 0 0 2rem;
+  font-family: var(--mono);
+  font-size: var(--fs-hero);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
   text-wrap: balance;
 }
 
@@ -162,17 +230,31 @@ body {
   display: block;
 }
 
-/* Section pages get the same treatment one step down the scale. */
+/* The last line is the one that matters. */
+.thesis span:last-child {
+  color: var(--accent);
+}
+
+/* Section pages get the same voice, well down the scale. */
 .thesis--page {
-  font-size: clamp(2rem, 4.6vw, 3rem);
+  font-size: var(--fs-xl);
   max-width: 24ch;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.03em;
+}
+.thesis--page span:last-child {
+  color: var(--ink);
+}
+.thesis--page::before {
+  content: "// ";
+  color: var(--accent);
 }
 
 .standfirst {
   max-width: var(--measure);
   margin: 0 0 1.25rem;
   font-size: 1.1875rem;
+  line-height: 1.6;
   color: var(--ink-soft);
 }
 .standfirst strong {
@@ -192,6 +274,9 @@ body {
   .thesis span:nth-child(3) {
     animation-delay: 180ms;
   }
+  .thesis span:nth-child(4) {
+    animation-delay: 270ms;
+  }
   .hero-fade {
     animation-delay: 300ms;
   }
@@ -206,6 +291,262 @@ body {
     opacity: 1;
     transform: none;
   }
+}
+
+/* ---------------------------------------------------------------
+   Lede — the one place the page is not a single column
+
+   Copy on the left, the status console on a rail to the right. Below
+   62rem it stacks, console first-after-copy, so nothing is lost.
+   --------------------------------------------------------------- */
+
+.lede {
+  display: grid;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+@media (min-width: 62rem) {
+  .lede {
+    grid-template-columns: minmax(0, 1fr) 19.5rem;
+    gap: 3.5rem;
+  }
+  .lede__rail {
+    position: sticky;
+    top: 2rem;
+  }
+}
+
+/* ---------------------------------------------------------------
+   Status console — real numbers, read out like a terminal
+   --------------------------------------------------------------- */
+
+.console {
+  border: 1px solid var(--rule-bright);
+  background: var(--ground-sink);
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  line-height: 1.6;
+}
+
+.console__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.7rem;
+  border-bottom: 1px solid var(--rule);
+  background: var(--ground-raise);
+}
+
+.console__dots {
+  display: flex;
+  gap: 0.3rem;
+}
+.console__dots i {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--rule-bright);
+}
+.console__dots i:first-child {
+  background: var(--k-postmortem);
+}
+
+.console__path {
+  color: var(--ink-faint);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.03em;
+}
+
+.console__body {
+  padding: 0.85rem 0.9rem 1rem;
+}
+
+.console__cmd {
+  margin: 0 0 0.75rem;
+  color: var(--ink-soft);
+}
+.console__cmd span {
+  color: var(--accent);
+  margin-right: 0.4rem;
+}
+
+.console__table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0.85rem;
+}
+
+.console__table th,
+.console__table td {
+  text-align: left;
+  font-weight: 400;
+  padding: 0.22rem 0;
+}
+
+.console__table thead th {
+  color: var(--ink-faint);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 0.4rem;
+}
+
+.console__table tbody th {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding-top: 0.35rem;
+}
+
+.console__marker {
+  flex: none;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--channel, var(--accent));
+}
+
+.console__table tbody a {
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+.console__table tbody a:hover {
+  color: var(--channel, var(--accent));
+}
+
+.console__num {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  width: 2.5rem;
+}
+.console__num[data-zero="true"] {
+  color: var(--ink-faint);
+}
+
+.console__date {
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.console__out {
+  margin: 0.3rem 0 0;
+  color: var(--ink-soft);
+}
+.console__out--dim {
+  color: var(--ink-faint);
+}
+.console__ok {
+  color: var(--k-pattern);
+}
+.console__out a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule-bright);
+}
+.console__out a:hover {
+  color: var(--accent);
+}
+
+.console__caret {
+  display: inline-block;
+  width: 0.45rem;
+  height: 0.85em;
+  margin-left: 0.3rem;
+  background: var(--accent);
+  vertical-align: text-bottom;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .console__caret {
+    animation: blink 1.2s steps(1, end) infinite;
+  }
+}
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ---------------------------------------------------------------
+   The rig — the guide as an instrument readout
+
+   Each row is a channel: status marker, slug, dotted leader, count.
+   The description sits under it in the editorial face so the row
+   itself stays scannable.
+   --------------------------------------------------------------- */
+
+.rig {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--rule);
+}
+
+.rig__row {
+  border-bottom: 1px solid var(--rule);
+  padding: 1.15rem 0 1.25rem;
+}
+
+.rig__head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.rig__marker {
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--channel, var(--accent));
+  align-self: center;
+}
+
+.rig__name {
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 500;
+}
+.rig__name:hover {
+  color: var(--channel, var(--accent));
+}
+
+/* Dotted leader, the way a table of contents runs one. */
+.rig__leader {
+  flex: 1 1 auto;
+  min-width: 1.5rem;
+  height: 1px;
+  transform: translateY(-0.2rem);
+  background-image: radial-gradient(circle, var(--rule-bright) 1px, transparent 1px);
+  background-size: 5px 1px;
+  background-repeat: repeat-x;
+}
+
+.rig__count {
+  flex: none;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+.rig__count[data-zero="true"] {
+  color: var(--ink-faint);
+}
+
+.rig__blurb {
+  margin: 0.55rem 0 0 1.25rem;
+  max-width: var(--measure);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
 }
 
 /* ---------------------------------------------------------------
@@ -228,7 +569,7 @@ body {
 
 .entry__meta {
   font-family: var(--mono);
-  font-size: 0.78125rem;
+  font-size: var(--fs-xs);
   line-height: 1.5;
   color: var(--ink-soft);
   display: flex;
@@ -236,12 +577,20 @@ body {
   gap: 0.85rem;
 }
 
+.entry__kind {
+  color: var(--channel, var(--ink-soft));
+}
+.entry__kind::before {
+  content: "▌";
+  margin-right: 0.15rem;
+}
+
 .entry__title {
   margin: 0;
-  font-size: 1.3125rem;
+  font-size: var(--fs-lg);
   font-weight: 600;
-  line-height: 1.28;
-  letter-spacing: -0.012em;
+  line-height: 1.25;
+  letter-spacing: -0.014em;
 }
 .entry__title a {
   color: var(--ink);
@@ -249,8 +598,8 @@ body {
   border-bottom: 1px solid transparent;
 }
 .entry__title a:hover {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
+  color: var(--channel, var(--accent));
+  border-bottom-color: var(--channel, var(--accent));
 }
 
 .entry__standfirst {
@@ -271,7 +620,7 @@ body {
     flex-direction: column;
     align-items: flex-end;
     gap: 0.2rem;
-    padding-top: 0.3rem;
+    padding-top: 0.35rem;
   }
   .entry__body {
     grid-column: 2;
@@ -291,20 +640,31 @@ body {
 .article-head h1 {
   margin: 0 0 0.9rem;
   max-width: 24ch;
-  font-size: clamp(2rem, 4.6vw, 3rem);
+  font-size: var(--fs-2xl);
   font-weight: 600;
   line-height: 1.12;
   letter-spacing: -0.024em;
   text-wrap: balance;
 }
 
+.article-head__standfirst {
+  max-width: var(--measure);
+  margin: 0 0 1.2rem;
+  font-size: 1.1875rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
 .article-head__meta {
   font-family: var(--mono);
-  font-size: 0.78125rem;
+  font-size: var(--fs-xs);
   color: var(--ink-soft);
   display: flex;
   flex-wrap: wrap;
   gap: 1.25rem;
+}
+.article-head__meta .entry__kind {
+  color: var(--channel, var(--accent));
 }
 
 .prose {
@@ -317,7 +677,7 @@ body {
 
 .prose h2 {
   margin-top: 3rem;
-  font-size: 1.5rem;
+  font-size: var(--fs-lg);
   font-weight: 600;
   line-height: 1.25;
   letter-spacing: -0.016em;
@@ -363,11 +723,11 @@ body {
 
 .prose pre {
   font-family: var(--mono);
-  font-size: 0.8125rem;
+  font-size: var(--fs-sm);
   line-height: 1.6;
   padding: 1rem 1.15rem;
   overflow-x: auto;
-  background: var(--ground-raise) !important;
+  background: var(--ground-sink) !important;
   border: 1px solid var(--rule);
 }
 .prose pre code {
@@ -376,14 +736,94 @@ body {
   padding: 0;
 }
 
+/* Shiki runs with defaultColor: false, so token colors arrive as CSS
+   variables and we choose per theme. The block background stays ours. */
+.astro-code span {
+  color: var(--shiki-dark);
+}
+@media (prefers-color-scheme: light) {
+  .astro-code span {
+    color: var(--shiki-light);
+  }
+}
+
+/* Figures break out past the text measure — a dashboard screenshot at
+   34rem is unreadable. The paragraph deliberately overflows .prose to
+   the right, stopping short of the shell edge. Markdown gives us
+   <p><img></p> followed by <p><em>caption</em></p>, so we style that
+   pair rather than asking authors to hand-write <figure>. */
 .prose img {
-  max-width: 100%;
+  display: block;
+  width: 100%;
   height: auto;
+  border: 1px solid var(--rule-bright);
+  background: var(--ground-sink);
+}
+
+.prose p:has(> img) {
+  width: min(calc(100vw - 2.5rem), 48rem);
+  margin-top: 2.5rem;
+  margin-inline: 0;
+}
+
+.prose p:has(> img) + p {
+  width: min(calc(100vw - 2.5rem), 48rem);
+  margin-top: 0.7rem;
+}
+
+.prose p:has(> img) + p em {
+  display: block;
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: var(--fs-xs);
+  line-height: 1.65;
+  color: var(--ink-faint);
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--rule-bright);
 }
 
 .prose hr {
   border: 0;
   border-top: 1px solid var(--rule);
+}
+
+/* ---------------------------------------------------------------
+   Provenance — the composite disclosure
+
+   Deliberately quiet. It should read as a standing convention, not a
+   disclaimer someone bolted on.
+   --------------------------------------------------------------- */
+
+.provenance {
+  max-width: var(--measure);
+  margin: 0 0 2.5rem;
+  padding: 0.9rem 1.1rem;
+  border: 1px solid var(--rule);
+  border-left: 2px solid var(--accent);
+  background: var(--ground-raise);
+}
+
+.provenance p {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+.provenance p::before {
+  content: "COMPOSITE ";
+  color: var(--accent);
+  letter-spacing: 0.06em;
+}
+
+.provenance a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule-bright);
+}
+.provenance a:hover {
+  color: var(--ink);
+  border-bottom-color: var(--accent);
 }
 
 /* ---------------------------------------------------------------
@@ -393,15 +833,18 @@ body {
 .subscribe {
   margin-top: 4.5rem;
   padding: 1.75rem 0 0;
-  border-top: 2px solid var(--ink);
+  border-top: 2px solid var(--rule-bright);
   max-width: var(--measure);
 }
 
 .subscribe h2 {
   margin: 0 0 0.4rem;
-  font-size: 1.25rem;
-  font-weight: 600;
-  letter-spacing: -0.012em;
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink);
 }
 
 .subscribe p {
@@ -420,15 +863,15 @@ body {
   flex: 1 1 15rem;
   min-width: 0;
   font-family: var(--mono);
-  font-size: 0.875rem;
+  font-size: var(--fs-sm);
   padding: 0.7rem 0.85rem;
   color: var(--ink);
-  background: var(--ground-raise);
-  border: 1px solid var(--rule);
+  background: var(--ground-sink);
+  border: 1px solid var(--rule-bright);
   border-radius: 0;
 }
 .subscribe input[type="email"]::placeholder {
-  color: var(--ink-soft);
+  color: var(--ink-faint);
 }
 .subscribe input[type="email"]:focus-visible {
   outline: 2px solid var(--accent);
@@ -438,24 +881,26 @@ body {
 
 .subscribe button {
   font-family: var(--mono);
-  font-size: 0.875rem;
+  font-size: var(--fs-sm);
+  font-weight: 500;
   padding: 0.7rem 1.15rem;
-  color: var(--ground-raise);
-  background: var(--ink);
-  border: 1px solid var(--ink);
+  color: var(--ground);
+  background: var(--accent);
+  border: 1px solid var(--accent);
   border-radius: 0;
   cursor: pointer;
 }
 .subscribe button:hover {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--ground);
 }
 
 .subscribe__note {
   margin: 0.85rem 0 0;
   font-family: var(--mono);
-  font-size: 0.75rem;
-  color: var(--ink-soft);
+  font-size: var(--fs-2xs);
+  color: var(--ink-faint);
 }
 
 /* ---------------------------------------------------------------
@@ -467,13 +912,51 @@ body {
 }
 
 .section > h2 {
-  margin: 0 0 1.5rem;
-  padding-bottom: 0.65rem;
+  margin: 0 0 1.25rem;
+  padding-bottom: 0.6rem;
   border-bottom: 1px solid var(--rule);
-  font-size: 1.0625rem;
-  font-weight: 600;
-  letter-spacing: -0.005em;
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--ink-soft);
+}
+.section > h2::before {
+  content: "── ";
+  color: var(--rule-bright);
+}
+
+.section__blurb {
+  margin: -0.35rem 0 1.75rem;
+  max-width: var(--measure);
+  font-size: 0.9375rem;
+  color: var(--ink-soft);
+}
+
+/* Section jump links on the guide index. */
+.jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+}
+.jump a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.jump a:hover {
+  color: var(--ink);
+  border-bottom-color: var(--rule-bright);
+}
+.jump__count {
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
 }
 
 .stack {
@@ -489,6 +972,14 @@ body {
   font-size: 1.0625rem;
   font-weight: 600;
 }
+.stack h3 a {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent);
+}
+.stack h3 a:hover {
+  color: var(--accent);
+}
 .stack p {
   margin: 0;
   max-width: var(--measure);
@@ -498,141 +989,12 @@ body {
 
 .empty {
   font-family: var(--mono);
-  font-size: 0.875rem;
-  color: var(--ink-soft);
+  font-size: var(--fs-sm);
+  color: var(--ink-faint);
   max-width: var(--measure);
 }
-
-/* ---------------------------------------------------------------
-   The guide
-
-   Four entry points on the homepage. Editorial layer for the section
-   name, machine layer for the count — the same split as everywhere else.
-   --------------------------------------------------------------- */
-
-.guide {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  gap: 2rem;
-}
-
-@media (min-width: 44rem) {
-  .guide {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 2.5rem 3rem;
-  }
-}
-
-.guide__item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--rule);
-}
-
-.guide__link {
-  font-size: 1.25rem;
-  font-weight: 600;
-  line-height: 1.25;
-  letter-spacing: -0.012em;
-  color: var(--ink);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  align-self: flex-start;
-}
-.guide__link:hover {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
-}
-
-.guide__blurb {
-  margin: 0;
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  color: var(--ink-soft);
-}
-
-.guide__count {
-  margin: 0.15rem 0 0;
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  color: var(--ink-soft);
-}
-
-/* Section jump links on the guide index. */
-.jump {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 1.5rem;
-  margin-bottom: 1rem;
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid var(--rule);
-  font-family: var(--mono);
-  font-size: 0.8125rem;
-}
-.jump a {
-  color: var(--ink-soft);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-}
-.jump a:hover {
-  color: var(--ink);
-  border-bottom-color: var(--rule);
-}
-.jump__count {
-  color: var(--accent);
-}
-
-.section__blurb {
-  margin: -0.75rem 0 1.75rem;
-  max-width: var(--measure);
-  font-size: 0.9375rem;
-  color: var(--ink-soft);
-}
-
-/* ---------------------------------------------------------------
-   Provenance
-
-   The composite disclosure at the top of anything drawn from real
-   work. Deliberately quiet — it should read as a standing convention,
-   not a disclaimer someone bolted on.
-   --------------------------------------------------------------- */
-
-.provenance {
-  max-width: var(--measure);
-  margin: 0 0 2.5rem;
-  padding: 0.9rem 0 0.9rem 1.1rem;
-  border-left: 2px solid var(--accent);
-  background: var(--accent-quiet);
-}
-
-.provenance p {
-  margin: 0;
-  font-family: var(--mono);
-  font-size: 0.8125rem;
-  line-height: 1.6;
-  color: var(--ink-soft);
-}
-
-.provenance a {
-  color: var(--ink-soft);
-  text-decoration: none;
-  border-bottom: 1px solid var(--rule);
-}
-.provenance a:hover {
-  color: var(--ink);
-  border-bottom-color: var(--accent);
-}
-
-.article-head__standfirst {
-  max-width: var(--measure);
-  margin: 0 0 1.1rem;
-  font-size: 1.1875rem;
-  line-height: 1.55;
-  color: var(--ink-soft);
+.empty::before {
+  content: "· ";
 }
 
 /* ---------------------------------------------------------------

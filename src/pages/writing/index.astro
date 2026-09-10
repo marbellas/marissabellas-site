@@ -43,7 +43,7 @@ const sections = KIND_ORDER.map((kind) => ({
 
   {
     sections.map((section) => (
-      <section class="section" id={section.meta.anchor}>
+      <section class="section" id={section.meta.anchor} style={`--channel: var(--k-${section.kind})`}>
         <h2>{section.meta.plural}</h2>
         <p class="section__blurb">{section.meta.blurb}</p>
         {section.entries.length === 0 ? (

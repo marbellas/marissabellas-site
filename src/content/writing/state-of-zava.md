@@ -18,7 +18,9 @@ Meet the State of Zava — a fictional state with a very real problem, and a wor
 
 [Explore the interactive prototype](https://marbellas.github.io/security-dashboard/)
 
-<!-- TODO: dashboard overview screenshot goes here -->
+![The statewide view: a single posture score, six headline metrics, and every entity as a card.](./images/zava-overview.png)
+
+*The opening view. The 72 is the elevator-pitch number — the thing a CISO can say out loud to a Governor without building a deck first. Everything above it is clickable, because the score is useless until you can answer "which of these is dragging it down."*
 
 ## Why this problem is uniquely hard in government
 
@@ -47,7 +49,9 @@ The goal was simple: a single pane of glass that gives a state CISO immediate an
 
 What emerged was a fully interactive dashboard with drill-downs, role-based views, and real-time filtering — all running as a single HTML file with no backend dependencies.
 
-<!-- TODO: entity drill-down screenshot goes here -->
+![Entity cards for twelve agencies, counties, and universities, with CVE status and top unpatched vulnerabilities below.](./images/zava-entities.png)
+
+*Twelve entities, four metrics each, one color language. A county with 289 vulnerabilities and a university with 567 need different conversations, and the CISO needs to see which is which before picking up the phone.*
 
 ## What we built
 

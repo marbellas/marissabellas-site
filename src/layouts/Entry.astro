@@ -21,13 +21,13 @@ const stamp = (date: Date) =>
 ---
 
 <Base title={`${title} — Marissa Bellas`} description={standfirst}>
-  <article>
+  <article style={`--channel: var(--k-${kind})`}>
     <header class="article-head">
       <h1>{title}</h1>
       <p class="article-head__standfirst">{standfirst}</p>
       <div class="article-head__meta">
         <time datetime={published.toISOString()}>{stamp(published)}</time>
-        <span>{KINDS[kind as Kind].label}</span>
+        <span class="entry__kind">{KINDS[kind as Kind].label}</span>
         {updated && <span>updated {stamp(updated)}</span>}
         {tags.length > 0 && <span>{tags.join(', ')}</span>}
       </div>

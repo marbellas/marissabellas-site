@@ -7,6 +7,11 @@ export default defineConfig({
   site: 'https://marissabellas.com',
   integrations: [sitemap()],
   markdown: {
-    shikiConfig: { theme: 'github-light' },
+    // Dual themes. defaultColor: false stops Shiki inlining either one,
+    // so both live in CSS variables and global.css picks per theme.
+    shikiConfig: {
+      themes: { light: 'github-light', dark: 'github-dark-dimmed' },
+      defaultColor: false,
+    },
   },
 });

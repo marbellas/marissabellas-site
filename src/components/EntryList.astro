@@ -18,10 +18,10 @@ const stamp = (date: Date) =>
   ) : (
     <ul class="entries">
       {entries.map((entry) => (
-        <li class="entry">
+        <li class="entry" style={`--channel: var(--k-${entry.data.kind})`}>
           <div class="entry__meta">
             <time datetime={entry.data.published.toISOString()}>{stamp(entry.data.published)}</time>
-            <span>{KINDS[entry.data.kind as Kind].label}</span>
+            <span class="entry__kind">{KINDS[entry.data.kind as Kind].label}</span>
           </div>
           <div class="entry__body">
             <h2 class="entry__title">

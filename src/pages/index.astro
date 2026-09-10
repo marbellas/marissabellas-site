@@ -2,50 +2,68 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import EntryList from '../components/EntryList.astro';
+import StatusBlock from '../components/StatusBlock.astro';
 import Subscribe from '../components/Subscribe.astro';
 import { KINDS, KIND_ORDER } from '../lib/kinds';
 
-const all = await getCollection('writing', ({ data }) => !data.draft);
-const entries = all
+// Drafts included — StatusBlock reports on them; everything else filters.
+const all = await getCollection('writing');
+const live = all.filter((e) => !e.data.draft);
+
+const entries = live
+  .slice()
   .sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf())
   .slice(0, 5);
 
-const count = (kind: string) => all.filter((e) => e.data.kind === kind).length;
+const count = (kind: string) => live.filter((e) => e.data.kind === kind).length;
 ---
 
 <Base
   title="Marissa Bellas — a field guide to security and AI"
-  description="Field notes, patterns, postmortems, and signals on security and AI — from someone who has deployed it, sold it, and now builds it."
+  description="Field notes, patterns, postmortems, and signals on security and AI — from someone who has deployed it, sold it, and now answers for it."
 >
-  <h1 class="thesis">
-    <span>Deployed it.</span>
-    <span>Sold it.</span>
-    <span>Now I build it.</span>
-  </h1>
+  <div class="lede">
+    <div class="lede__copy">
+      <h1 class="thesis">
+        <span>Deployed it.</span>
+        <span>Sold it.</span>
+        <span>Now I answer for it.</span>
+      </h1>
 
-  <p class="standfirst hero-fade">
-    Most writing about security and AI comes from one seat. I have sat in three — delivery, then
-    sales, now product — and the view changes more than you would expect between them.
-  </p>
+      <p class="standfirst hero-fade">
+        Most writing about security and AI comes from one seat. I have sat in three — delivery,
+        then sales, now customer experience — and the view changes more than you would expect
+        between them.
+      </p>
 
-  <p class="standfirst hero-fade">
-    This is a field guide, not a feed. What actually happens when this technology meets a real
-    environment: the practices that hold, the mistakes that repeat, and the ones I made myself.
-  </p>
+      <p class="standfirst hero-fade">
+        This is a field guide, not a feed. What actually happens when this technology meets a real
+        environment: the practices that hold, the mistakes that repeat, and the ones I made myself.
+      </p>
+    </div>
+
+    <div class="lede__rail hero-fade">
+      <StatusBlock all={all} />
+    </div>
+  </div>
 
   <section class="section">
     <h2>The guide</h2>
-    <ul class="guide">
+    <ul class="rig">
       {
         KIND_ORDER.map((kind) => (
-          <li class="guide__item">
-            <a class="guide__link" href={`/writing/#${KINDS[kind].anchor}`}>
-              {KINDS[kind].plural}
-            </a>
-            <p class="guide__blurb">{KINDS[kind].blurb}</p>
-            <p class="guide__count">
-              {count(kind) === 0 ? 'nothing published yet' : `${count(kind)} published`}
+          <li class="rig__row" style={`--channel: var(--k-${kind})`}>
+            <p class="rig__head">
+              <span class="rig__marker" aria-hidden="true" />
+              <a class="rig__name" href={`/writing/#${KINDS[kind].anchor}`}>
+                {KINDS[kind].plural}
+              </a>
+              <span class="rig__leader" aria-hidden="true" />
+              <span class="rig__count" data-zero={count(kind) === 0 ? 'true' : 'false'}>
+                {String(count(kind)).padStart(2, '0')}
+              </span>
             </p>
+            <p class="rig__blurb">{KINDS[kind].blurb}</p>
           </li>
         ))
       }

@@ -1,0 +1,90 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { KINDS, KIND_ORDER, type Kind } from '../lib/kinds';
+
+interface Props {
+  /** Every entry in the collection, drafts included. */
+  all: CollectionEntry<'writing'>[];
+}
+
+const { all } = Astro.props;
+
+const published = all.filter((e) => !e.data.draft);
+const drafts = all.filter((e) => e.data.draft);
+
+const iso = (d: Date) => d.toISOString().slice(0, 10);
+
+const rows = KIND_ORDER.map((kind) => {
+  const inKind = published
+    .filter((e) => e.data.kind === kind)
+    .sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf());
+  return {
+    kind,
+    slug: kind,
+    count: inKind.length,
+    latest: inKind.length > 0 ? iso(inKind[0].data.published) : null,
+  };
+});
+
+const newest = published.sort(
+  (a, b) => b.data.published.valueOf() - a.data.published.valueOf()
+)[0];
+
+const built = iso(new Date());
+---
+
+<section class="console" aria-label="Guide status">
+  <header class="console__bar">
+    <span class="console__dots" aria-hidden="true">
+      <i></i><i></i><i></i>
+    </span>
+    <span class="console__path">marissabellas.com</span>
+  </header>
+
+  <div class="console__body">
+    <p class="console__cmd" aria-hidden="true"><span>$</span> guide --status</p>
+
+    <table class="console__table">
+      <thead>
+        <tr>
+          <th scope="col">channel</th>
+          <th scope="col">n</th>
+          <th scope="col">latest</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          rows.map((row) => (
+            <tr style={`--channel: var(--k-${row.kind})`}>
+              <th scope="row">
+                <span class="console__marker" aria-hidden="true" />
+                <a href={`/writing/#${KINDS[row.kind as Kind].anchor}`}>{row.slug}</a>
+              </th>
+              <td class="console__num" data-zero={row.count === 0 ? 'true' : 'false'}>
+                {String(row.count).padStart(2, '0')}
+              </td>
+              <td class="console__date">{row.latest ?? '——'}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+
+    <p class="console__out">
+      <span class="console__ok">{published.length}</span> published ·
+      <span>{drafts.length}</span> in draft ·
+      feed at <a href="/rss.xml">/rss.xml</a>
+    </p>
+    {
+      newest && (
+        <p class="console__out console__out--dim">
+          newest &rsaquo; {newest.data.title}
+        </p>
+      )
+    }
+    <p class="console__out console__out--dim">
+      built {built} · static · no trackers
+      <span class="console__caret" aria-hidden="true" />
+    </p>
+  </div>
+</section>
