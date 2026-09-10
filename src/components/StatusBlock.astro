@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { KINDS, KIND_ORDER, type Kind } from '../lib/kinds';
+import { KINDS, KIND_ORDER, showCount, type Kind } from '../lib/kinds';
 
 interface Props {
   /** Every entry in the collection, drafts included. */
@@ -10,10 +10,11 @@ interface Props {
 const { all } = Astro.props;
 
 const published = all.filter((e) => !e.data.draft);
-const drafts = all.filter((e) => e.data.draft);
 
 const iso = (d: Date) => d.toISOString().slice(0, 10);
 
+// Sections with nothing in them are omitted, not shown as zero. Draft
+// counts are never surfaced publicly — what isn't finished isn't news.
 const rows = KIND_ORDER.map((kind) => {
   const inKind = published
     .filter((e) => e.data.kind === kind)
@@ -24,7 +25,7 @@ const rows = KIND_ORDER.map((kind) => {
     count: inKind.length,
     latest: inKind.length > 0 ? iso(inKind[0].data.published) : null,
   };
-});
+}).filter((row) => row.count > 0);
 
 const newest = published.sort(
   (a, b) => b.data.published.valueOf() - a.data.published.valueOf()
@@ -60,10 +61,8 @@ const built = iso(new Date());
                 <span class="console__marker" aria-hidden="true" />
                 <a href={`/writing/#${KINDS[row.kind as Kind].anchor}`}>{row.slug}</a>
               </th>
-              <td class="console__num" data-zero={row.count === 0 ? 'true' : 'false'}>
-                {String(row.count).padStart(2, '0')}
-              </td>
-              <td class="console__date">{row.latest ?? '——'}</td>
+              <td class="console__num">{showCount(row.count) ? row.count : ''}</td>
+              <td class="console__date">{row.latest}</td>
             </tr>
           ))
         }
@@ -72,7 +71,6 @@ const built = iso(new Date());
 
     <p class="console__out">
       <span class="console__ok">{published.length}</span> published ·
-      <span>{drafts.length}</span> in draft ·
       feed at <a href="/rss.xml">/rss.xml</a>
     </p>
     {

@@ -4,18 +4,16 @@ import Base from '../layouts/Base.astro';
 import EntryList from '../components/EntryList.astro';
 import StatusBlock from '../components/StatusBlock.astro';
 import Subscribe from '../components/Subscribe.astro';
-import { KINDS, KIND_ORDER } from '../lib/kinds';
+import { KINDS, withEntries, showCount } from '../lib/kinds';
 
-// Drafts included — StatusBlock reports on them; everything else filters.
-const all = await getCollection('writing');
-const live = all.filter((e) => !e.data.draft);
+const live = (await getCollection('writing', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.published.valueOf() - a.data.published.valueOf()
+);
 
-const entries = live
-  .slice()
-  .sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf())
-  .slice(0, 5);
+const entries = live.slice(0, 5);
 
-const count = (kind: string) => live.filter((e) => e.data.kind === kind).length;
+// Only sections with something published in them.
+const sections = withEntries(live);
 ---
 
 <Base
@@ -43,7 +41,7 @@ const count = (kind: string) => live.filter((e) => e.data.kind === kind).length;
     </div>
 
     <div class="lede__rail hero-fade">
-      <StatusBlock all={all} />
+      <StatusBlock all={live} />
     </div>
   </div>
 
@@ -51,7 +49,7 @@ const count = (kind: string) => live.filter((e) => e.data.kind === kind).length;
     <h2>The guide</h2>
     <ul class="rig">
       {
-        KIND_ORDER.map((kind) => (
+        sections.map(({ kind, entries: inKind }) => (
           <li class="rig__row" style={`--channel: var(--k-${kind})`}>
             <p class="rig__head">
               <span class="rig__marker" aria-hidden="true" />
@@ -59,9 +57,7 @@ const count = (kind: string) => live.filter((e) => e.data.kind === kind).length;
                 {KINDS[kind].plural}
               </a>
               <span class="rig__leader" aria-hidden="true" />
-              <span class="rig__count" data-zero={count(kind) === 0 ? 'true' : 'false'}>
-                {String(count(kind)).padStart(2, '0')}
-              </span>
+              {showCount(inKind.length) && <span class="rig__count">{inKind.length}</span>}
             </p>
             <p class="rig__blurb">{KINDS[kind].blurb}</p>
           </li>

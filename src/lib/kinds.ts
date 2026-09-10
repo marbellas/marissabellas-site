@@ -47,3 +47,22 @@ export const KINDS: Record<Kind, KindMeta> = {
 };
 
 export const KIND_ORDER: Kind[] = ['field-note', 'pattern', 'postmortem', 'signal'];
+
+/**
+ * A count of one or two is noise — it advertises how little is there.
+ * Counts appear only once a section has enough in it to be worth counting.
+ */
+export const COUNT_THRESHOLD = 3;
+export const showCount = (n: number) => n >= COUNT_THRESHOLD;
+
+/**
+ * Sections with nothing published are not rendered at all — no zero, no
+ * em dash, no "nothing here yet". An empty shelf is worse than no shelf.
+ */
+export const withEntries = <T extends { data: { kind: string; draft: boolean } }>(
+  entries: T[]
+): { kind: Kind; entries: T[] }[] =>
+  KIND_ORDER.map((kind) => ({
+    kind,
+    entries: entries.filter((e) => !e.data.draft && e.data.kind === kind),
+  })).filter((section) => section.entries.length > 0);

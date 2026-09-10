@@ -3,20 +3,15 @@ import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import EntryList from '../../components/EntryList.astro';
 import Subscribe from '../../components/Subscribe.astro';
-import { KINDS, KIND_ORDER } from '../../lib/kinds';
+import { KINDS, withEntries, showCount } from '../../lib/kinds';
 
 const all = (await getCollection('writing', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.published.valueOf() - a.data.published.valueOf()
 );
 
-// The guide reads as four sections rather than one reverse-chronological
-// list. Sections with nothing in them are still shown, so the shape of the
-// guide is visible before it is full.
-const sections = KIND_ORDER.map((kind) => ({
-  kind,
-  meta: KINDS[kind],
-  entries: all.filter((entry) => entry.data.kind === kind),
-}));
+// Only sections that actually have something in them. A section with
+// nothing published is not rendered at all.
+const sections = withEntries(all);
 ---
 
 <Base
@@ -27,30 +22,35 @@ const sections = KIND_ORDER.map((kind) => ({
     <span>Field guide</span>
   </h1>
   <p class="standfirst hero-fade">
-    Organized by what you came for, not by when I wrote it. Four sections: a situation, a practice,
-    a failure, or something arriving next.
+    Organized by what you came for, not by when I wrote it: a situation, a practice, a failure, or
+    something arriving next.
   </p>
 
-  <nav class="jump" aria-label="Sections">
-    {
-      sections.map((section) => (
-        <a href={`#${section.meta.anchor}`}>
-          {section.meta.plural} <span class="jump__count">{section.entries.length}</span>
-        </a>
-      ))
-    }
-  </nav>
+  {
+    sections.length > 1 && (
+      <nav class="jump" aria-label="Sections">
+        {sections.map((section) => (
+          <a href={`#${KINDS[section.kind].anchor}`}>
+            {KINDS[section.kind].plural}
+            {showCount(section.entries.length) && (
+              <span class="jump__count">{section.entries.length}</span>
+            )}
+          </a>
+        ))}
+      </nav>
+    )
+  }
 
   {
     sections.map((section) => (
-      <section class="section" id={section.meta.anchor} style={`--channel: var(--k-${section.kind})`}>
-        <h2>{section.meta.plural}</h2>
-        <p class="section__blurb">{section.meta.blurb}</p>
-        {section.entries.length === 0 ? (
-          <p class="empty">Nothing here yet.</p>
-        ) : (
-          <EntryList entries={section.entries} />
-        )}
+      <section
+        class="section"
+        id={KINDS[section.kind].anchor}
+        style={`--channel: var(--k-${section.kind})`}
+      >
+        <h2>{KINDS[section.kind].plural}</h2>
+        <p class="section__blurb">{KINDS[section.kind].blurb}</p>
+        <EntryList entries={section.entries} />
       </section>
     ))
   }
