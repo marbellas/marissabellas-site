@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import EntryList from '../components/EntryList.astro';
-import StatusBlock from '../components/StatusBlock.astro';
+import FeaturedCard from '../components/FeaturedCard.astro';
 import Subscribe from '../components/Subscribe.astro';
 import { KINDS, withEntries, showCount } from '../lib/kinds';
 
@@ -10,7 +10,12 @@ const live = (await getCollection('writing', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.published.valueOf() - a.data.published.valueOf()
 );
 
-const entries = live.slice(0, 5);
+// One piece is flagged featured; otherwise the newest stands in.
+const featured = live.find((e) => e.data.featured) ?? live[0];
+
+// The featured piece is already the loudest thing on the page, so it is
+// not repeated in the list below it.
+const entries = live.filter((e) => e.id !== featured?.id).slice(0, 5);
 
 // Only sections with something published in them.
 const sections = withEntries(live);
@@ -40,9 +45,13 @@ const sections = withEntries(live);
       </p>
     </div>
 
-    <div class="lede__rail hero-fade">
-      <StatusBlock all={live} />
-    </div>
+    {
+      featured && (
+        <div class="lede__rail hero-fade">
+          <FeaturedCard entry={featured} />
+        </div>
+      )
+    }
   </div>
 
   <section class="section">
@@ -66,10 +75,14 @@ const sections = withEntries(live);
     </ul>
   </section>
 
-  <section class="section">
-    <h2>Most recent</h2>
-    <EntryList entries={entries} />
-  </section>
+  {
+    entries.length > 0 && (
+      <section class="section">
+        <h2>Most recent</h2>
+        <EntryList entries={entries} />
+      </section>
+    )
+  }
 
   <Subscribe />
 </Base>

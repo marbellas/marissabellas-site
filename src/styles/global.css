@@ -296,8 +296,8 @@ body {
 /* ---------------------------------------------------------------
    Lede — the one place the page is not a single column
 
-   Copy on the left, the status console on a rail to the right. Below
-   62rem it stacks, console first-after-copy, so nothing is lost.
+   Copy on the left, the featured piece on a rail to the right. Below
+   62rem it stacks, the feature landing directly under the copy.
    --------------------------------------------------------------- */
 
 .lede {
@@ -308,169 +308,93 @@ body {
 
 @media (min-width: 62rem) {
   .lede {
-    grid-template-columns: minmax(0, 1fr) 19.5rem;
+    grid-template-columns: minmax(0, 1fr) 22rem;
     gap: 3.5rem;
-  }
-  .lede__rail {
-    position: sticky;
-    top: 2rem;
   }
 }
 
 /* ---------------------------------------------------------------
-   Status console — real numbers, read out like a terminal
+   Featured card
+
+   One piece, given the weight of an image. The whole card is the link
+   target; the "Read it" cue is decoration, not a second tab stop.
    --------------------------------------------------------------- */
 
-.console {
-  border: 1px solid var(--rule-bright);
-  background: var(--ground-sink);
-  font-family: var(--mono);
-  font-size: var(--fs-xs);
-  line-height: 1.6;
-}
-
-.console__bar {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.5rem 0.7rem;
-  border-bottom: 1px solid var(--rule);
+.feature {
+  border: 1px solid var(--rule);
   background: var(--ground-raise);
 }
 
-.console__dots {
-  display: flex;
-  gap: 0.3rem;
+.feature__link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
 }
-.console__dots i {
-  width: 0.45rem;
-  height: 0.45rem;
-  border-radius: 50%;
-  background: var(--rule-bright);
+.feature__link:hover .feature__title {
+  color: var(--channel, var(--accent));
 }
-.console__dots i:first-child {
-  background: var(--k-postmortem);
+.feature__link:hover .feature__cue {
+  color: var(--channel, var(--accent));
 }
 
-.console__path {
-  color: var(--ink-faint);
-  font-size: var(--fs-2xs);
-  letter-spacing: 0.03em;
-}
-
-.console__body {
-  padding: 0.85rem 0.9rem 1rem;
-}
-
-.console__cmd {
-  margin: 0 0 0.75rem;
-  color: var(--ink-soft);
-}
-.console__cmd span {
-  color: var(--accent);
-  margin-right: 0.4rem;
-}
-
-.console__table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 0.85rem;
-}
-
-.console__table th,
-.console__table td {
-  text-align: left;
-  font-weight: 400;
-  padding: 0.22rem 0;
-}
-
-.console__table thead th {
-  color: var(--ink-faint);
-  font-size: var(--fs-2xs);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.feature__media {
   border-bottom: 1px solid var(--rule);
-  padding-bottom: 0.4rem;
+  background: var(--ground-sink);
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+.feature__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
 }
 
-.console__table tbody th {
+.feature__body {
+  padding: 1rem 1.1rem 1.15rem;
+}
+
+.feature__kind {
   display: flex;
   align-items: center;
   gap: 0.45rem;
-  padding-top: 0.35rem;
+  margin: 0 0 0.5rem;
+  font-family: var(--mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
 }
 
-.console__marker {
-  flex: none;
+.feature__marker {
   width: 0.4rem;
   height: 0.4rem;
   border-radius: 50%;
   background: var(--channel, var(--accent));
 }
 
-.console__table tbody a {
-  color: var(--ink-soft);
-  text-decoration: none;
-}
-.console__table tbody a:hover {
-  color: var(--channel, var(--accent));
-}
-
-.console__num {
-  color: var(--ink);
-  font-variant-numeric: tabular-nums;
-  width: 2.5rem;
-}
-.console__num[data-zero="true"] {
-  color: var(--ink-faint);
+.feature__title {
+  margin: 0 0 0.45rem;
+  font-size: 1.3125rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.014em;
+  text-wrap: balance;
 }
 
-.console__date {
-  color: var(--ink-faint);
-  font-variant-numeric: tabular-nums;
-}
-
-.console__out {
-  margin: 0.3rem 0 0;
+.feature__dek {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.55;
   color: var(--ink-soft);
 }
-.console__out--dim {
-  color: var(--ink-faint);
-}
-.console__ok {
-  color: var(--k-pattern);
-}
-.console__out a {
-  color: var(--ink-soft);
-  text-decoration: none;
-  border-bottom: 1px solid var(--rule-bright);
-}
-.console__out a:hover {
-  color: var(--accent);
-}
 
-.console__caret {
-  display: inline-block;
-  width: 0.45rem;
-  height: 0.85em;
-  margin-left: 0.3rem;
-  background: var(--accent);
-  vertical-align: text-bottom;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .console__caret {
-    animation: blink 1.2s steps(1, end) infinite;
-  }
-}
-@keyframes blink {
-  0%,
-  50% {
-    opacity: 1;
-  }
-  50.01%,
-  100% {
-    opacity: 0;
-  }
+.feature__cue {
+  margin: 0.7rem 0 0;
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  color: var(--ink-faint);
 }
 
 /* ---------------------------------------------------------------

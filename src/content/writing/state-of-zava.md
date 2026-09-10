@@ -6,6 +6,8 @@ kind: field-note
 tags: ["government", "security posture", "prototyping"]
 draft: false
 composite: true
+image: ./images/zava-overview.png
+featured: true
 ---
 
 A state CISO told me something that stuck with me:

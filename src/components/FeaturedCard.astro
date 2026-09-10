@@ -1,0 +1,43 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import { KINDS, type Kind } from '../lib/kinds';
+
+interface Props {
+  entry: CollectionEntry<'writing'>;
+}
+
+const { entry } = Astro.props;
+const { title, standfirst, kind, image } = entry.data;
+
+const href = `/writing/${entry.id}/`;
+---
+
+<article class="feature" style={`--channel: var(--k-${kind})`}>
+  <a class="feature__link" href={href}>
+    {
+      image && (
+        <div class="feature__media">
+          <Image
+            src={image}
+            alt=""
+            widths={[480, 800, 1200]}
+            sizes="(min-width: 62rem) 34rem, 100vw"
+            loading="eager"
+            aria-hidden="true"
+          />
+        </div>
+      )
+    }
+
+    <div class="feature__body">
+      <p class="feature__kind">
+        <span class="feature__marker" aria-hidden="true" />
+        {KINDS[kind as Kind].label}
+      </p>
+      <h2 class="feature__title">{title}</h2>
+      <p class="feature__dek">{standfirst}</p>
+      <p class="feature__cue" aria-hidden="true">Read it &rsaquo;</p>
+    </div>
+  </a>
+</article>
