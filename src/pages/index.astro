@@ -54,9 +54,18 @@ const sections = withEntries(live);
     }
   </div>
 
+  {
+    entries.length > 0 && (
+      <section class="section">
+        <h2>Most recent</h2>
+        <EntryList entries={entries} />
+      </section>
+    )
+  }
+
   <section class="section">
     <h2>The guide</h2>
-    <ul class="rig">
+    <ul class="rig rig--compact">
       {
         sections.map(({ kind, entries: inKind }) => (
           <li class="rig__row" style={`--channel: var(--k-${kind})`}>
@@ -68,21 +77,11 @@ const sections = withEntries(live);
               <span class="rig__leader" aria-hidden="true" />
               {showCount(inKind.length) && <span class="rig__count">{inKind.length}</span>}
             </p>
-            <p class="rig__blurb">{KINDS[kind].blurb}</p>
           </li>
         ))
       }
     </ul>
   </section>
-
-  {
-    entries.length > 0 && (
-      <section class="section">
-        <h2>Most recent</h2>
-        <EntryList entries={entries} />
-      </section>
-    )
-  }
 
   <Subscribe />
 </Base>

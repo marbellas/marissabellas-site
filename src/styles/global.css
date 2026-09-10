@@ -417,6 +417,13 @@ body {
   padding: 1.15rem 0 1.25rem;
 }
 
+/* Homepage variant: one line per category, no description. The full
+   descriptions live on /writing/, where someone is choosing what to
+   read rather than being introduced to the shape of the guide. */
+.rig--compact .rig__row {
+  padding: 0.7rem 0;
+}
+
 .rig__head {
   display: flex;
   align-items: baseline;
