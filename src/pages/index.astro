@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import EntryList from '../components/EntryList.astro';
 import FeaturedCard from '../components/FeaturedCard.astro';
-import Subscribe from '../components/Subscribe.astro';
+import Follow from '../components/Follow.astro';
 import { KINDS, withEntries, showCount } from '../lib/kinds';
 
 const live = (await getCollection('writing', ({ data }) => !data.draft)).sort(
@@ -83,5 +83,5 @@ const sections = withEntries(live);
     </ul>
   </section>
 
-  <Subscribe />
+  <Follow />
 </Base>

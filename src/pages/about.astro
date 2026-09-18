@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import Subscribe from '../components/Subscribe.astro';
+import Follow from '../components/Follow.astro';
 import { hasPublicFile } from '../lib/public-file';
 
 // Drop a headshot at public/images/marissa.jpg and it appears in the rail.
@@ -122,5 +122,5 @@ const hasPhoto = hasPublicFile('images/marissa.jpg');
     </aside>
   </div>
 
-  <Subscribe />
+  <Follow />
 </Base>

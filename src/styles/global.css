@@ -27,7 +27,7 @@
   --ink-soft: #8b9ba2;
   /* 5.08:1 on --ground. The previous #5b6a71 measured 3.36:1, which is
      below AA for body text and was carrying real content: dates, tags,
-     captions and the subscribe note. */
+     captions and figure captions. */
   --ink-faint: #78878e;
   --rule: #222d32;
   --rule-bright: #35454d;
@@ -1187,17 +1187,22 @@ body {
 }
 
 /* ---------------------------------------------------------------
-   Subscribe
+   Follow
+
+   Stands where the email form used to. Same weight on the page — it is
+   still the closing ask — but it asks for nothing and links to the two
+   channels that actually work today.
    --------------------------------------------------------------- */
 
-.subscribe {
+.follow {
   margin-top: 4.5rem;
   padding: 1.75rem 0 0;
   border-top: 2px solid var(--rule-bright);
   max-width: var(--measure);
+  clear: both;
 }
 
-.subscribe h2 {
+.follow h2 {
   margin: 0 0 0.4rem;
   font-family: var(--serif);
   font-size: 1.25rem;
@@ -1206,65 +1211,31 @@ body {
   color: var(--ink);
 }
 
-.subscribe p {
-  margin: 0 0 1.1rem;
+.follow p {
+  margin: 0 0 1rem;
   font-size: 1rem;
+  line-height: 1.6;
   color: var(--ink-soft);
 }
 
-.subscribe__form {
+.follow__links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.subscribe input[type="email"] {
-  flex: 1 1 15rem;
-  min-width: 0;
+  gap: 0.6rem 1.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
   font-family: var(--mono);
   font-size: var(--fs-sm);
-  padding: 0.7rem 0.85rem;
+}
+
+.follow__links a {
   color: var(--ink);
-  background: var(--ground-sink);
-  border: 1px solid var(--rule-bright);
-  border-radius: 0;
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent);
 }
-.subscribe input[type="email"]::placeholder {
-  color: var(--ink-soft);
-  opacity: 1;
-}
-.subscribe input[type="email"]:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
-  border-color: var(--accent);
-}
-
-.subscribe button {
-  font-family: var(--mono);
-  font-size: var(--fs-sm);
-  font-weight: 500;
-  padding: 0.7rem 1.15rem;
-  color: var(--ground);
-  background: var(--accent);
-  border: 1px solid var(--accent);
-  border-radius: 0;
-  cursor: pointer;
-}
-.subscribe button:hover {
-  background: var(--ink);
-  border-color: var(--ink);
-  color: var(--ground);
-}
-
-/* Same 12px mono as every other piece of meta on the site, 8px below the
-   form it annotates. It was 11px and floating 14px clear, reading as its
-   own paragraph rather than a footnote to the field. */
-.subscribe__note {
-  margin: 0.5rem 0 0;
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  line-height: 1.5;
-  color: var(--ink-faint);
+.follow__links a:hover {
+  color: var(--accent);
 }
 
 /* ---------------------------------------------------------------

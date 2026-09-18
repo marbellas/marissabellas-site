@@ -2,7 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import { getImage } from 'astro:assets';
 import Base from './Base.astro';
-import Subscribe from '../components/Subscribe.astro';
+import Follow from '../components/Follow.astro';
 import AuthorBio from '../components/AuthorBio.astro';
 import PrevNext from '../components/PrevNext.astro';
 import { KINDS, type Kind } from '../lib/kinds';
@@ -109,5 +109,5 @@ const stamp = (date: Date) =>
 
   <AuthorBio />
   <PrevNext current={entry} />
-  <Subscribe />
+  <Follow />
 </Base>
