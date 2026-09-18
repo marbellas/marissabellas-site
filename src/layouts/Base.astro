@@ -29,6 +29,24 @@ const ogImage = new URL(image ?? '/og-default.png', Astro.site);
     <meta name="theme-color" content="#0d1214" media="(prefers-color-scheme: dark)" />
     <meta name="theme-color" content="#f3f5f3" media="(prefers-color-scheme: light)" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    {/* Runs before first paint so a saved choice never flashes the wrong
+        theme. Deliberately inline and unminified — moving it to an
+        external file would reintroduce the flash it exists to prevent.
+        Absent a saved choice, nothing is set and the CSS follows the
+        system preference. */}
+    <script is:inline>
+      (function () {
+        try {
+          var saved = localStorage.getItem('theme');
+          if (saved === 'light' || saved === 'dark') {
+            document.documentElement.setAttribute('data-theme', saved);
+          }
+        } catch (e) {
+          /* Private mode or blocked storage — fall through to the system preference. */
+        }
+      })();
+    </script>
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />

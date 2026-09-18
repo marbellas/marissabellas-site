@@ -59,8 +59,20 @@
   --step: 1.5rem;
 }
 
+/* Light palette.
+   ----------------------------------------------------------------
+   Defined twice on purpose, and the two copies MUST be kept in sync.
+
+   The first applies when the reader's system asks for light and they
+   have not overridden it here. The second applies when they have
+   explicitly chosen light with the toggle, and has to win regardless of
+   what the system says. CSS cannot combine a media condition and an
+   attribute selector in one rule, and light-dark() is avoided so that a
+   browser without it does not lose every colour on the page.
+   ---------------------------------------------------------------- */
+
 @media (prefers-color-scheme: light) {
-  :root {
+  :root:not([data-theme="dark"]) {
     color-scheme: light;
 
     --ground: #f3f5f3;
@@ -80,6 +92,34 @@
     --k-postmortem: #a8452a;
     --k-signal: #5a4bb8;
   }
+}
+
+:root[data-theme="light"] {
+    color-scheme: light;
+
+    --ground: #f3f5f3;
+    --ground-raise: #ffffff;
+    --ground-sink: #e6eae7;
+    --ink: #111a1e;
+    --ink-soft: #536068;
+    /* 5.10:1 on --ground, 5.59:1 on --ground-raise. Was #7d8b92 at 3.20:1. */
+    --ink-faint: #5c6a71;
+    --rule: #d2d9d5;
+    --rule-bright: #b3bdb8;
+    --accent: #9a6412;
+    --accent-quiet: #f7efe0;
+
+    --k-field-note: #1c6f89;
+    --k-pattern: #3f7d3c;
+    --k-postmortem: #a8452a;
+    --k-signal: #5a4bb8;
+}
+
+/* An explicit dark choice has to beat a system that prefers light. The
+   dark values already live on :root, so this only needs to restate the
+   scheme for form controls and scrollbars. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
 }
 
 *,
@@ -181,6 +221,36 @@ body {
   border-bottom-color: var(--accent);
 }
 
+/* Theme toggle — machine layer, sits at the end of the nav. Hidden until
+   the script upgrades it, so a reader without JavaScript is not offered a
+   control that cannot work. */
+.theme-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  margin-left: -0.5rem;
+  color: var(--ink-soft);
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.theme-toggle[data-ready="true"] {
+  display: inline-flex;
+}
+.theme-toggle:hover {
+  color: var(--accent);
+  border-color: var(--rule-bright);
+}
+.theme-toggle svg {
+  width: 1rem;
+  height: 1rem;
+  display: block;
+}
+
 .colophon {
   margin-top: 6rem;
   padding: 1.75rem 0 3rem;
@@ -275,13 +345,14 @@ body {
   color: var(--ink-soft);
 }
 
+/* Shown at the photograph's own proportions. Forcing it square cropped
+   229px out of a 1145x1374 portrait, and centring that crop took the
+   slice off the top of her head. A rail has room for a portrait. */
 .headshot {
   display: block;
   width: 100%;
   max-width: 11rem;
   height: auto;
-  aspect-ratio: 1;
-  object-fit: cover;
   margin-bottom: 1.25rem;
   border: 1px solid var(--rule-bright);
   background: var(--ground-raise);
@@ -1090,12 +1161,16 @@ body {
   max-width: var(--measure);
 }
 
+/* The byline is a circle, so this one has to be cropped square. Anchored
+   to the top rather than the centre — a circle discards the corners too,
+   so a centred crop clips the head. */
 .byline__photo {
   flex: none;
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 50%;
   object-fit: cover;
+  object-position: center top;
   border: 1px solid var(--rule-bright);
   background: var(--ground-raise);
 }

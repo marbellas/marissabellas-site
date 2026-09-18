@@ -20,5 +20,58 @@ const isCurrent = (href: string) => path === href || path.startsWith(href);
         </a>
       ))
     }
+
+    {/* Revealed by the script below. Without JavaScript the site still
+        follows the system preference; it just does not offer a control
+        that would do nothing. */}
+    <button class="theme-toggle" type="button" aria-label="Switch theme">
+      {/* A half-filled circle: the standard contrast mark, and it reads
+          the same in either theme, so it needs no swapping. */}
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5" />
+        <path d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor" />
+      </svg>
+    </button>
   </nav>
 </header>
+
+<script is:inline>
+  (function () {
+    var root = document.documentElement;
+    var button = document.querySelector('.theme-toggle');
+    if (!button) return;
+
+    // What is actually on screen right now: an explicit choice if one was
+    // restored in the head, otherwise whatever the system asked for.
+    function current() {
+      var set = root.getAttribute('data-theme');
+      if (set === 'light' || set === 'dark') return set;
+      return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    }
+
+    function describe() {
+      var next = current() === 'dark' ? 'light' : 'dark';
+      button.setAttribute('aria-label', 'Switch to ' + next + ' theme');
+    }
+
+    button.setAttribute('data-ready', 'true');
+    describe();
+
+    button.addEventListener('click', function () {
+      var next = current() === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try {
+        localStorage.setItem('theme', next);
+      } catch (e) {
+        /* Storage blocked — the choice still applies for this page view. */
+      }
+      describe();
+    });
+
+    // If the reader has never chosen, keep following the system when it
+    // changes underneath them.
+    window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', function () {
+      if (!root.getAttribute('data-theme')) describe();
+    });
+  })();
+</script>
