@@ -173,12 +173,110 @@ body {
 .masthead {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 0.75rem 2rem;
   margin-bottom: 5rem;
   padding: 1.5rem 0 0.85rem;
   border-bottom: 1px solid var(--rule);
+}
+
+/* Controls that stay in the bar at every width. */
+.masthead__tools {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  order: 3;
+}
+
+/* ---------------------------------------------------------------
+   Collapsing nav
+
+   The links are visible by default and only become collapsible once
+   the script sets data-collapsible — so with JavaScript off nothing
+   ends up hidden behind a button that cannot open.
+   --------------------------------------------------------------- */
+
+.nav-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  color: var(--ink-soft);
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.nav-toggle:hover {
+  color: var(--accent);
+  border-color: var(--rule-bright);
+}
+.nav-toggle svg {
+  width: 1rem;
+  height: 1rem;
+  display: block;
+}
+.nav-toggle__cross {
+  display: none;
+}
+.nav-toggle[aria-expanded="true"] .nav-toggle__bars {
+  display: none;
+}
+.nav-toggle[aria-expanded="true"] .nav-toggle__cross {
+  display: block;
+}
+
+/* Above the breakpoint the links are always shown and the button is
+   irrelevant, whatever the script did. */
+@media (min-width: 40rem) {
+  .nav-toggle {
+    display: none !important;
+  }
+
+  /* Nav and the tools cluster stay together on the right, as they did
+     when the theme control lived inside the nav. Splitting them into two
+     flex children left space-between stranding the nav mid-bar. */
+  .masthead {
+    justify-content: flex-start;
+  }
+  .nav {
+    margin-left: auto;
+  }
+  .masthead__tools {
+    margin-left: -0.75rem;
+  }
+}
+
+@media (max-width: 39.999rem) {
+  .nav {
+    order: 4;
+    width: 100%;
+  }
+
+  .masthead[data-collapsible="true"] .nav {
+    display: none;
+  }
+
+  .masthead[data-collapsible="true"][data-open="true"] .nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-top: 0.5rem;
+  }
+
+  .masthead[data-collapsible="true"][data-open="true"] .nav a {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .masthead[data-collapsible="true"][data-open="true"] .nav a:last-child {
+    border-bottom: 0;
+  }
+  .masthead[data-collapsible="true"][data-open="true"] .nav a[aria-current="page"] {
+    color: var(--accent);
+  }
 }
 
 .masthead__name {
