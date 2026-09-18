@@ -1,0 +1,19 @@
+# Line endings are normalised to LF in the repository and checked out as
+# LF everywhere, including Windows. This project is worked on from both a
+# Mac and a Windows machine; without this, each one rewrites the other's
+# line endings and every file shows as wholly changed in the diff.
+#
+# Node, Astro, VS Code and Git Bash all handle LF on Windows without
+# complaint, so there is no reason to convert on checkout.
+* text=auto eol=lf
+
+# Binary assets — never inspected as text, never converted.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.webp binary
+*.gif  binary
+*.ico  binary
+*.pdf  binary
+*.woff  binary
+*.woff2 binary
