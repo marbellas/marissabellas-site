@@ -197,6 +197,36 @@ body {
    ends up hidden behind a button that cannot open.
    --------------------------------------------------------------- */
 
+/* Theme toggle — machine layer, sits at the end of the nav. Hidden until
+   the script upgrades it, so a reader without JavaScript is not offered a
+   control that cannot work. */
+.theme-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  margin-left: -0.5rem;
+  color: var(--ink-soft);
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.theme-toggle[data-ready="true"] {
+  display: inline-flex;
+}
+.theme-toggle:hover {
+  color: var(--accent);
+  border-color: var(--rule-bright);
+}
+.theme-toggle svg {
+  width: 1rem;
+  height: 1rem;
+  display: block;
+}
+
 .nav-toggle {
   display: inline-flex;
   align-items: center;
@@ -214,9 +244,17 @@ body {
   color: var(--accent);
   border-color: var(--rule-bright);
 }
-.nav-toggle svg {
+/* Both glyphs live in the button and exactly one is shown. Display is set
+   on the individual classes rather than on `.nav-toggle svg`, because that
+   selector carries a class AND an element and so outranked
+   `.nav-toggle__cross { display: none }` — which left the hamburger and
+   the cross rendering side by side at every state. */
+.nav-toggle__bars,
+.nav-toggle__cross {
   width: 1rem;
   height: 1rem;
+}
+.nav-toggle__bars {
   display: block;
 }
 .nav-toggle__cross {
@@ -251,6 +289,36 @@ body {
 }
 
 @media (max-width: 39.999rem) {
+  /* Touch sizing. At 28px with a 6px gap these two sat close enough to
+     mis-tap — a fingertip is around 44px across. The hit area grows to
+     44 square, which is the Apple and Android guideline, while the glyph
+     stays small so the header does not turn into two big buttons. The
+     negative margin that tucks the pair leftwards on desktop comes off,
+     since there is no nav beside them to tuck against. */
+  .masthead__tools {
+    gap: 0.25rem;
+  }
+
+  .theme-toggle,
+  .nav-toggle {
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-left: 0;
+  }
+
+  .theme-toggle svg,
+  .nav-toggle__bars,
+  .nav-toggle__cross {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  /* Pull the cluster out to the content edge so the larger buttons do not
+     read as floating away from it. */
+  .masthead__tools {
+    margin-right: -0.6rem;
+  }
+
   .nav {
     order: 4;
     width: 100%;
@@ -319,35 +387,6 @@ body {
   border-bottom-color: var(--accent);
 }
 
-/* Theme toggle — machine layer, sits at the end of the nav. Hidden until
-   the script upgrades it, so a reader without JavaScript is not offered a
-   control that cannot work. */
-.theme-toggle {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  padding: 0;
-  margin-left: -0.5rem;
-  color: var(--ink-soft);
-  background: none;
-  border: 1px solid transparent;
-  border-radius: 50%;
-  cursor: pointer;
-}
-.theme-toggle[data-ready="true"] {
-  display: inline-flex;
-}
-.theme-toggle:hover {
-  color: var(--accent);
-  border-color: var(--rule-bright);
-}
-.theme-toggle svg {
-  width: 1rem;
-  height: 1rem;
-  display: block;
-}
 
 .colophon {
   margin-top: 6rem;
